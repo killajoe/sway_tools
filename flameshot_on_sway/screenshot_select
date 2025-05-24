@@ -13,7 +13,7 @@ if [ -z "$PICTURES_DIR" ]; then
   PICTURES_DIR="$HOME/Pictures"
 fi
 
-DIR="$PICTURES_DIR"
+DIR="$PICTURES_DIR/screenshots"
 mkdir -p "$DIR"
 FILENAME="screenshot_$(date '+%Y-%m-%d_%H-%M-%S').png"
 TARGET="$DIR/$FILENAME"
