@@ -5,7 +5,15 @@
 # this tool let you seleczt rectangle area of your screen, 
 # opens it in swappy to edit, and save it under users screenshot path.
 
-DIR="$(xdg-user-dir PICTURES)/screenshots"
+# Try to get the XDG Pictures directory using xdg-user-dir
+PICTURES_DIR=$(xdg-user-dir PICTURES 2>/dev/null)
+
+# If the command failed or returned empty, fallback to $HOME/Pictures
+if [ -z "$PICTURES_DIR" ]; then
+  PICTURES_DIR="$HOME/Pictures"
+fi
+
+DIR="$PICTURES_DIR"
 mkdir -p "$DIR"
 FILENAME="screenshot_$(date '+%Y-%m-%d_%H-%M-%S').png"
 TARGET="$DIR/$FILENAME"
