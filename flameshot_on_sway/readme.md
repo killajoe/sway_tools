@@ -28,3 +28,5 @@ bindsym $mod+Print exec  --no-startup-id ~/.config/sway/scripts/screenshot-selec
 # Shot of all screens in one pic after releasing print button:
 bindsym --release Print exec --no-startup-id ~/.config/sway/scripts/screenshot
 ```
+
+Replace `~/.config/sway/scripts/screenshot*` with the actual path to the script.
