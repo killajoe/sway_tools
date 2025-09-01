@@ -3,7 +3,7 @@
 
 needed packages: `sudo pacman -Syu --needed slurp xdg-user-dirs`
 
-wl-screenrec currently only in AUR will be added to EndeavourOS repo in case of release
+wl-screenrec currently only in AUR:
 
 `yay -S wl-screenrec`
 
