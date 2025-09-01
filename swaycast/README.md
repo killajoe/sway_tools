@@ -13,10 +13,6 @@ to stop press [$mod+shift+x] it will save automatically to video $HOME dir.
 
 # How it works
 
-    The script now accepts an argument:
-        No argument → starts recording
-        Argument “stop” → stops recording
-
 Setting up keybinds in Sway
 
 If you use Sway’s config (usually ~/.config/sway/config), you can bind keys to run the script with or without the stop argument.
