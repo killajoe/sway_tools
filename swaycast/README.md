@@ -21,10 +21,10 @@ If you use Sway’s config (usually ~/.config/sway/config), you can bind keys to
 Example:
 Shell
 
-# Start recording (select area)
+**Start recording (select area)**
 bindsym $mod+Shift+y exec ~/path/to/screencast-select
 
-# Stop recording
+**Stop recording**
 bindsym $mod+Shift+x exec ~/path/to/screencast-select stop
 
 Replace ~/path/to/screencast-select with the actual path to your script.
