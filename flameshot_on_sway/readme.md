@@ -18,6 +18,6 @@ the edited screenshot is then saved in the screenshot directory ($HOME/Pictures/
 ``` 
 # take a screenshot of a selection:
 bindsym $mod+Print exec  --no-startup-id ~/.config/sway/scripts/screenshot-select
-# generall all scrfren shot:
+# Shot of all screens in one pic after releasing print button:
 bindsym --release Print exec --no-startup-id ~/.config/sway/scripts/screenshot
 ```
