@@ -16,8 +16,8 @@ the edited screenshot is then saved in the screenshot directory ($HOME/Pictures/
 ![animation](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/flameshot_on_sway/screenshot-flamshotalike.gif)
 
 ``` 
-# of the focused window
+# take a screenshot of a selection:
 bindsym $mod+Print exec  --no-startup-id ~/.config/sway/scripts/screenshot-select
-
+# generall all scrfren shot:
 bindsym --release Print exec --no-startup-id ~/.config/sway/scripts/screenshot
 ```
