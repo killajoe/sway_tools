@@ -9,7 +9,7 @@ this tool let you select rectangle area of your screen [$mod+shift+y],and start 
 
 to stop press [$mod+shift+x] it will save automatically to video $HOME dir.
 
-![demo](https://github.com/killajoe/sway_tools/releases/download/1.0/swacast.gif)
+![demo](https://imgur.com/a/72dEgvF)
 
 
 # How it works
