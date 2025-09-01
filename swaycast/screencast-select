@@ -2,9 +2,23 @@
 
 # joekamprad on sway screencast helper (swaycast):
 # needed packages: `sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs`
-# wl-screenrec currently only in AUR will beadded to EndeavourOS repo in case of release
-# this tool let you select rectangle area of your screen [$mod+shift+y],and start recording that area. 
-# to stop press [$mod+shift+x] it will save automatically to video $HOME dir.
+# wl-screenrec currently only in AUR will be added to EndeavourOS repo in case of release
+# this tool lets you select rectangle area of your screen [$mod+shift+y], and start recording that area. 
+# to stop press [$mod+shift+x] or use: screencast-select stop
+
+PIDFILE="/tmp/wl-screenrec.pid"
+
+if [[ "$1" == "stop" ]]; then
+  PID=$(cat "$PIDFILE" 2>/dev/null)
+  if [ -n "$PID" ]; then
+    kill "$PID"
+    notify-send -i media-playback-stop "Screencast stopped"
+    rm -f "$PIDFILE"
+  else
+    notify-send -i dialog-error "No running Screencast found"
+  fi
+  exit 0
+fi
 
 VIDEOS_DIR=$(xdg-user-dir VIDEOS 2>/dev/null)
 if [ -z "$VIDEOS_DIR" ]; then
@@ -16,14 +30,14 @@ mkdir -p "$DIR"
 FILENAME="screencast_$(date '+%Y-%m-%d_%H-%M-%S').mp4"
 TARGET="$DIR/$FILENAME"
 
-# ASelect recording area
+# Select recording area
 GEOM=$(slurp)
 
 # start recording (in the background)
 wl-screenrec -g "$GEOM" -f "$TARGET" &
 PID=$!
 
-notify-send -i media-record "Screencast running" "stop with: kill $PID"
+notify-send -i media-record "Screencast running" "stop with: screencast-select stop or kill $PID"
 
 # PID gets saved to be used for stop script
-echo $PID > /tmp/wl-screenrec.pid
+echo $PID > "$PIDFILE"
