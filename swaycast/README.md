@@ -21,7 +21,7 @@ If you use Sway’s config (usually ~/.config/sway/config), you can bind keys to
 Example:
 Shell
 
-``
+``` 
 # Start recording (select area)
 bindsym $mod+Shift+y exec ~/path/to/screencast-select
 
