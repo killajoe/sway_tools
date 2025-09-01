@@ -24,9 +24,9 @@ If you use Sway’s config (usually `$HOME/.config/sway/config`), you can bind k
 
 ``` 
 # take a screenshot of a selection:
-bindsym $mod+Print exec  --no-startup-id ~/.config/sway/scripts/screenshot-select
+bindsym $mod+Print exec  --no-startup-id $HOME/.config/sway/scripts/screenshot-select
 # Shot of all screens in one pic after releasing print button:
-bindsym --release Print exec --no-startup-id ~/.config/sway/scripts/screenshot
+bindsym --release Print exec --no-startup-id $HOME/.config/sway/scripts/screenshot
 ```
 
-Replace `~/.config/sway/scripts/screenshot*` with the actual path to the script.
+Replace `$HOME/.config/sway/scripts/screenshot*` with the actual path to the script.
