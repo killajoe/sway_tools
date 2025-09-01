@@ -1,5 +1,5 @@
 
-# joekamprad on sway screencast helper (swaycast):
+# joekamprad sway screencast helper (swaycast):
 
 needed packages: `sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs`
 
