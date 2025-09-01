@@ -1,0 +1,4 @@
+#!/bin/bash
+DATE=$(date '+%Y-%m-%d_%H-%M-%S')
+grim ~/Bilder/screenshots/screenshot_$DATE.png
+notify-send "Screenshot erstellt" "Hier: ~/Bilder/screenshots/screenshot_$DATE.png" -i "$HOME/Bilder/screenshots/screenshot_$DATE.png"
