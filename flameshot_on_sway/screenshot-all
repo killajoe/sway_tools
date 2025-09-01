@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# joekamprad on sway screenshot helper:
+# needed packages: `sudo pacman -Syu --needed grim xdg-user-dirs`
+# this tool creates a screenshot of all your screens in one picture, 
+
 SCREENSHOT_DIR="$(xdg-user-dir PICTURES)/screenshots"
 DATE=$(date '+%Y-%m-%d_%H-%M-%S')
 FILENAME="screenshot_$DATE.png"
@@ -7,4 +11,4 @@ FILEPATH="$SCREENSHOT_DIR/$FILENAME"
 
 mkdir -p "$SCREENSHOT_DIR"
 grim "$FILEPATH"
-notify-send "Screenshot erstellt" "Hier: $FILEPATH" -i "$FILEPATH"
+notify-send "Screenshot created" "here: $FILEPATH" -i "$FILEPATH"
