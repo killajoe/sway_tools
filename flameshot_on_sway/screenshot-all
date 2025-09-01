@@ -1,4 +1,10 @@
 #!/bin/bash
+
+SCREENSHOT_DIR="$(xdg-user-dir PICTURES)/screenshots"
 DATE=$(date '+%Y-%m-%d_%H-%M-%S')
-grim ~/Bilder/screenshots/screenshot_$DATE.png
-notify-send "Screenshot erstellt" "Hier: ~/Bilder/screenshots/screenshot_$DATE.png" -i "$HOME/Bilder/screenshots/screenshot_$DATE.png"
+FILENAME="screenshot_$DATE.png"
+FILEPATH="$SCREENSHOT_DIR/$FILENAME"
+
+mkdir -p "$SCREENSHOT_DIR"
+grim "$FILEPATH"
+notify-send "Screenshot erstellt" "Hier: $FILEPATH" -i "$FILEPATH"
