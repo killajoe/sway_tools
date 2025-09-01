@@ -1,0 +1,9 @@
+#!/bin/bash
+# screencast-stop.sh
+PID=$(cat /tmp/wl-screenrec.pid 2>/dev/null)
+if [ -n "$PID" ]; then
+  kill "$PID"
+  notify-send -i media-playback-stop "Screencast beendet"
+else
+  notify-send -i dialog-error "Kein laufender Screencast gefunden"
+fi
