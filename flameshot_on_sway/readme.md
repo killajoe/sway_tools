@@ -20,7 +20,7 @@ the edited screenshot is then saved in the screenshot directory ($HOME/Pictures/
 
 Setting up keybinds in Sway
 
-If you use Sway’s config (usually $HOME/.config/sway/config), you can bind keys to run the script:
+If you use Sway’s config (usually `$HOME/.config/sway/config`), you can bind keys to run the script:
 
 ``` 
 # take a screenshot of a selection:
