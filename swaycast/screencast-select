@@ -1,0 +1,23 @@
+#!/bin/bash
+
+VIDEOS_DIR=$(xdg-user-dir VIDEOS 2>/dev/null)
+if [ -z "$VIDEOS_DIR" ]; then
+  VIDEOS_DIR="$HOME/Videos"
+fi
+
+DIR="$VIDEOS_DIR/screencasts"
+mkdir -p "$DIR"
+FILENAME="screencast_$(date '+%Y-%m-%d_%H-%M-%S').mp4"
+TARGET="$DIR/$FILENAME"
+
+# Auswahlbereich definieren
+GEOM=$(slurp)
+
+# Aufnahme starten (im Hintergrund)
+wl-screenrec -g "$GEOM" -f "$TARGET" &
+PID=$!
+
+notify-send -i media-record "Screencast läuft" "Beende mit: kill $PID"
+
+# PID speichern, damit man z.B. ein separates Script bauen kann, um zu beenden
+echo $PID > /tmp/wl-screenrec.pid
