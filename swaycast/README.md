@@ -9,6 +9,8 @@ this tool let you select rectangle area of your screen [$mod+shift+y],and start 
 
 to stop press [$mod+shift+x] it will save automatically to video $HOME dir.
 
+[![Watch the video](https://img.youtube.com/vi/_xo14TCYZDk/hqdefault.jpg)](https://youtu.be/_xo14TCYZDk)
+
 # How it works
 
     The script now accepts an argument:
