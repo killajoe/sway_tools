@@ -17,7 +17,7 @@ to stop press [$mod+shift+x] it will save automatically to video $HOME dir.
 
 Setting up keybinds in Sway
 
-If you use Sway’s config (usually ~/.config/sway/config), you can bind keys to run the script with or without the stop argument.
+If you use Sway’s config (usually `$HOME/.config/sway/config`), you can bind keys to run the script with or without the stop argument.
 Example:
 
 ``` 
