@@ -15,6 +15,13 @@ the edited screenshot is then saved in the screenshot directory ($HOME/Pictures/
 
 ![animation](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/flameshot_on_sway/screenshot-flamshotalike.gif)
 
+
+How it works
+
+Setting up keybinds in Sway
+
+If you use Sway’s config (usually $HOME/.config/sway/config), you can bind keys to run the script:
+
 ``` 
 # take a screenshot of a selection:
 bindsym $mod+Print exec  --no-startup-id ~/.config/sway/scripts/screenshot-select
