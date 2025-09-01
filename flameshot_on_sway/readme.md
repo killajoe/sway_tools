@@ -16,7 +16,7 @@ the edited screenshot is then saved in the screenshot directory ($HOME/Pictures/
 ![animation](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/flameshot_on_sway/screenshot-flamshotalike.gif)
 
 
-How it works
+# How it works
 
 Setting up keybinds in Sway
 
