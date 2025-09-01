@@ -1,3 +1,10 @@
+
+# joekamprad on sway screencast helper (swaycast):
+# needed packages: `sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs`
+# wl-screenrec currently only in AUR will beadded to EndeavourOS repo in case of release
+# this tool let you select rectangle area of your screen [$mod+shift+y],and start recording that area. 
+# to stop press [$mod+shift+x] it will save automatically to video $HOME dir.
+
 # How it works
 
     The script now accepts an argument:
