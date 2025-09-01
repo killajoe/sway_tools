@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # joekamprad on sway screenshot helper:
-# needed packages: `sudo pacman -Syu grim slurp swappy`
+# needed packages: `sudo pacman -Syu --needed grim slurp swappy xdg-user-dirs`
 # this tool let you select rectangle area of your screen, 
 # opens it in swappy to edit, and save it under users screenshot path.
 
-# Try to get the XDG Pictures directory using xdg-user-dir
+# Try to get the XDG Pictures directory using xdg-user-dirs
 PICTURES_DIR=$(xdg-user-dir PICTURES 2>/dev/null)
 
 # If the command failed or returned empty, fallback to $HOME/Pictures
