@@ -10,6 +10,7 @@
 # needs rofi config:
 # $HOME/.config/rofi/powermenu.rasi
 
+ROFI_THEME="${HOME}/.config/rofi/powermenu.rasi"
 # Define possible lock scripts/commands (edit this list as you like)
 LOCK_SCRIPTS=("swaylock" "swaylock-effects" "i3lock" "$HOME/.config/sway/scripts/gtklock")
 
@@ -52,7 +53,7 @@ else
 fi
 
 chosen="$(echo -e "$options" | rofi -dmenu -i -p "Power Menu" \
-    -theme $HOME/.config/rofi/powermenu.rasi)"
+    -theme $ROFI_THEME)"
 
 case $chosen in
     "$lock")
