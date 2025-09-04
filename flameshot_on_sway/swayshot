@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+#
+# screenshot.sh - Unified Screenshot helper for Sway
+#
+# Copyright (C) 2025 Johannes Kamprad
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# needed packages: `sudo pacman -Syu --needed grim slurp swappy xdg-user-dirs wl-clipboard`
+# this tool let you select rectangle area of your screen (-s),  
+# opens it in swappy to edit, and save it under users screenshot path.
+# Or take a screenshot of all displays usding -a (all) 
+
+set -e
+
+usage() {
+    echo "Usage: $0 [OPTION]"
+    echo "  -a, --all      Screenshot all screens"
+    echo "  -s, --select   Select a region and edit with swappy"
+    exit 1
+}
+
+# Parse arguments
+if [[ $# -ne 1 ]]; then
+    usage
+fi
+
+case "$1" in
+    -a|--all)
+        MODE="all"
+        ;;
+    -s|--select)
+        MODE="select"
+        ;;
+    *)
+        usage
+        ;;
+esac
+
+# Try to get the XDG Pictures directory using xdg-user-dirs
+PICTURES_DIR=$(xdg-user-dir PICTURES 2>/dev/null)
+if [ -z "$PICTURES_DIR" ]; then
+    PICTURES_DIR="$HOME/Pictures"
+fi
+
+SCREENSHOT_DIR="$PICTURES_DIR/screenshots"
+mkdir -p "$SCREENSHOT_DIR"
+DATE=$(date '+%Y-%m-%d_%H-%M-%S')
+FILENAME="screenshot_$DATE.png"
+FILEPATH="$SCREENSHOT_DIR/$FILENAME"
+
+if [ "$MODE" = "all" ]; then
+    # Screenshot all screens
+    grim "$FILEPATH"
+    notify-send "Screenshot created" "here: $FILEPATH" -i "$FILEPATH"
+    echo "Saved: $FILEPATH"
+elif [ "$MODE" = "select" ]; then
+    # Screenshot selectable region and edit with swappy
+    TMPFILE="/tmp/swappy_$$.png"
+    grim -g "$(slurp)" "$TMPFILE"
+    swappy -f "$TMPFILE"
+
+    # Find latest swappy file (usually saved as $HOME/swappy-*.png)
+    LATEST=$(ls -t "$HOME"/swappy-*.png 2>/dev/null | head -n1)
+    if [ -f "$LATEST" ]; then
+        mv "$LATEST" "$FILEPATH"
+        wl-copy < "$FILEPATH"
+        notify-send "Screenshot saved and copied to clipboard" "$FILEPATH" -i "$FILEPATH"
+        echo "Saved & copied: $FILEPATH"
+    else
+        notify-send -i dialog-warning "Screenshot canceled or not saved"
+        echo "No screenshot saved."
+    fi
+    rm -f "$TMPFILE"
+fi
