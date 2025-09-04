@@ -7,6 +7,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# needs rofi config:
+# $HOME/.config/rofi/powermenu.rasi
+
 # Define possible lock scripts/commands (edit this list as you like)
 LOCK_SCRIPTS=("swaylock" "swaylock-effects" "i3lock" "$HOME/.config/sway/scripts/gtklock")
 
