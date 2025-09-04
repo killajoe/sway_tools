@@ -1,6 +1,13 @@
-#!/bin/bash
-# Original: https://gitlab.com/Nmoleo/i3-volume-brightness-indicator
-# Adapted for Sway, Wayland, brightnessctl & swaync
+#!/usr/bin/env bash
+#
+# volume_brightness_osd - for Sway, Wayland, brightnessctl & swaync
+#
+# Copyright (C) 2025 Johannes Kamprad
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# osd for volume and brightness 
+# using pactl, brightnessctl, swaync 
 
 bar_color="#7f7fff"
 volume_step=5
