@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# screenshot.sh - Unified Screenshot helper for Sway
+# swayshot - Unified Screenshot helper for Sway
 #
 # Copyright (C) 2025 Johannes Kamprad
 #
