@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Keymap.sh - Keyboard Layout Selector using dialog
+# keymap_set - Keyboard Layout Selector using dialog
 #
 # Copyright (C) 2025 Johannes Kamprad
 #
