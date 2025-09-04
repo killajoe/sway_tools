@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Keyboard Layout Selector for Sway/Linux
+# Keyboard Layout Selector using dialog
 # Allows users to interactively change their keyboard layout using localectl
 #
 
@@ -139,7 +139,7 @@ show_keymap_dialog() {
     fi
 }
 
-# Test keymap temporarily
+# Test keymap temporarily -- this part is still WIP! 
 test_keymap() {
     local keymap="$1"
     local current_keymap="$2"
