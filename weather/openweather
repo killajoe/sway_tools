@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# screenshot_all - Screenshot helper for Sway
+# openweather - OpenWeatherMap Weather Fetcher for Waybar/Status Bars
 #
 # Copyright (C) 2025 Johannes Kamprad
 #
