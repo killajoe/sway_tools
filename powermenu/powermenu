@@ -1,86 +1,14 @@
 #!/usr/bin/env bash
+
 #
-# Use rofi to change system runstate thanks to systemd.
+# powermenu - a very simple rofi powermenu
 #
-# Note: this currently relies on associative array support in the shell.
+# Copyright (C) 2025 Johannes Kamprad
 #
-# Inspired from i3pystatus wiki:
-# https://github.com/enkore/i3pystatus/wiki/Shutdown-Menu
-#
-# original Copyright 2015 Benjamin Chrétien <chretien at lirmm dot fr>
-# Modifications Copyright 2025 joekamprad <joekamprad at endeavouros dot com>
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# SPDX-License-Identifier: GPL-3.0-or-later
 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-#######################################################################
-#                            BEGIN CONFIG                             #
-#######################################################################
-
-# Configuration file location
-CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
-CONFIG_FILE="$CONFIG_DIR/powermenu/config"
-
-# Default configuration (can be overridden by config file)
-# Lock script options (in order of preference)
-DEFAULT_LOCK_SCRIPTS=(
-    "$CONFIG_DIR/sway/scripts/blur-lock.sh"
-    "$CONFIG_DIR/sway/scripts/lock.sh"
-    "swaylock"
-    "i3lock"
-)
-
-# Colors: FG (foreground), BG (background), HL (highlighted)
-DEFAULT_FG_COLOR="#bbbbbb"
-DEFAULT_BG_COLOR="#111111"
-DEFAULT_HLFG_COLOR="#111111"
-DEFAULT_HLBG_COLOR="#bbbbbb"
-DEFAULT_BORDER_COLOR="#222222"
-
-# Default rofi options
-DEFAULT_ROFI_THEME="$CONFIG_DIR/rofi/powermenu.rasi"
-DEFAULT_ROFI_TEXT=":"
-
-
-#######################################################################
-#                             END CONFIG                              #
-#######################################################################
-
-# Load configuration
-load_config() {
-    # Set defaults
-    LOCK_SCRIPTS=("${DEFAULT_LOCK_SCRIPTS[@]}")
-    FG_COLOR="$DEFAULT_FG_COLOR"
-    BG_COLOR="$DEFAULT_BG_COLOR"
-    HLFG_COLOR="$DEFAULT_HLFG_COLOR"
-    HLBG_COLOR="$DEFAULT_HLBG_COLOR"
-    BORDER_COLOR="$DEFAULT_BORDER_COLOR"
-    ROFI_THEME="$DEFAULT_ROFI_THEME"
-    ROFI_TEXT="$DEFAULT_ROFI_TEXT"
-    
-    # Load from config file if it exists
-    if [[ -f "$CONFIG_FILE" ]]; then
-        source "$CONFIG_FILE"
-    fi
-    
-    # Set rofi options based on theme or fallback
-    if [[ -f "$ROFI_THEME" ]]; then
-        ROFI_OPTIONS=(-theme "$ROFI_THEME")
-    else
-        # Fallback to color-based options if theme file doesn't exist
-        ROFI_OPTIONS=(-width -18 -location 4 -hide-scrollbar -padding 5)
-    fi
-}
+# Define possible lock scripts/commands (edit this list as you like)
+LOCK_SCRIPTS=("swaylock" "swaylock-effects" "i3lock" "$HOME/.config/sway/scripts/gtklock")
 
 # Find available lock script
 find_lock_script() {
@@ -100,142 +28,49 @@ find_lock_script() {
             fi
         fi
     done
-    
-    # No lock script found
     return 1
 }
 
-# Whether to ask for user's confirmation
-enable_confirmation=false
-
-usage="$(basename "$0") [-h] [-c] -- display a menu for shutdown, reboot, lock etc.
-
-where:
-    -h  show this help text
-    -c  ask for user confirmation
-
-This script depends on:
-  - systemd,
-  - sway,
-  - rofi."
+# Menu entries
+chancel=" Cancel"
+lock="  Lock"
+logout="  Logout"
+reboot="  Reboot"
+shutdown="  Shutdown"
+suspend="  Suspend"
+hibernate="  Hibernate"
 
 
-# Parse CLI arguments
-while getopts "hc" option; do
-  case "${option}" in
-    h) echo "${usage}"
-       exit 0
-       ;;
-    c) enable_confirmation=true
-       ;;
-    *) exit 1
-       ;;
-  esac
-done
-
-# Check whether a command exists
-function command_exists() {
-  command -v "$1" &> /dev/null 2>&1
-}
-
-# Load configuration first
-load_config
-
-# Check dependencies
-function check_dependencies() {
-    local missing_deps=()
-    
-    # systemctl is required
-    if ! command_exists systemctl; then
-        missing_deps+=("systemctl (systemd)")
-    fi
-    
-    # Check if rofi is available
-    if ! command_exists rofi; then
-        missing_deps+=("rofi")
-    fi
-    
-    # Check for lock script
-    local lock_script
-    if ! lock_script=$(find_lock_script); then
-        echo "Warning: No lock script found. Lock option will be disabled." >&2
-        echo "Consider installing swaylock or creating a custom lock script." >&2
-        echo "Searched for: ${LOCK_SCRIPTS[*]}" >&2
-    fi
-    
-    if [[ ${#missing_deps[@]} -gt 0 ]]; then
-        echo "Error: Missing required dependencies:" >&2
-        printf '  %s\n' "${missing_deps[@]}" >&2
-        exit 1
-    fi
-}
-
-# Run dependency check
-check_dependencies
-
-# Build menu with available options
-build_menu() {
-    # menu defined as an associative array
-    typeset -A -g menu
-    
-    # Default menu items
-    menu=(
-        [" Shutdown"]="systemctl poweroff"
-        [" Reboot"]="systemctl reboot"
-        [" Suspend"]="systemctl suspend"
-        [" Logout"]="swaymsg exit"
-        [" Hibernate"]="systemctl hibernate"
-        [" Cancel"]=""
-    )
-    
-    # Add lock option only if a lock script is available
-    local lock_script
-    if lock_script=$(find_lock_script); then
-        menu[" Lock"]="$lock_script"
-    fi
-    
-    # Allow custom menu items from config file
-    if [[ -n "${CUSTOM_MENU_ITEMS:-}" ]]; then
-        # CUSTOM_MENU_ITEMS should be an associative array in config
-        for key in "${!CUSTOM_MENU_ITEMS[@]}"; do
-            menu["$key"]="${CUSTOM_MENU_ITEMS[$key]}"
-        done
-    fi
-}
-
-# Build the menu
-build_menu
-
-menu_nrows=${#menu[@]}
-
-# Menu entries that may trigger a confirmation message
-menu_confirm="Shutdown Reboot Hibernate Suspend Halt Logout"
-
-# Prepare rofi launcher
-rofi_colors=(-bc "${BORDER_COLOR}" -bg "${BG_COLOR}" -fg "${FG_COLOR}" \
-    -hlfg "${HLFG_COLOR}" -hlbg "${HLBG_COLOR}")
-launcher_options=(-dmenu -i -lines "${menu_nrows}" -p "${ROFI_TEXT}" \
-    "${rofi_colors[@]}" "${ROFI_OPTIONS[@]}")
-
-# Show menu and get selection
-selection="$(printf '%s\n' "${!menu[@]}" | sort | rofi "${launcher_options[@]}")"
-
-# Confirmation function
-ask_confirmation() {
-    local confirmed
-    confirmed=$(echo -e "Yes\nNo" | rofi -dmenu -i -lines 2 -p "${selection}?" \
-        "${rofi_colors[@]}" "${ROFI_OPTIONS[@]}")
-    
-    if [[ "$confirmed" == "Yes" ]]; then
-        swaymsg -q "exec ${menu[${selection}]}"
-    fi
-}
-
-if [[ $? -eq 0 && ! -z ${selection} ]]; then
-  if [[ "${enable_confirmation}" = true && \
-        ${menu_confirm} =~ (^|[[:space:]])"${selection}"($|[[:space:]]) ]]; then
-    ask_confirmation
-  else
-    swaymsg -q "exec ${menu[${selection}]}"
-  fi
+# Add lock only if script is found
+if lockcmd="$(find_lock_script)"; then
+    options="$chancel\n$lock\n$logout\n$reboot\n$shutdown\n$suspend\n$hibernate"
+else
+    options="$chancel\n$logout\n$reboot\n$shutdown\n$suspend\n$hibernate"
 fi
+
+chosen="$(echo -e "$options" | rofi -dmenu -i -p "Power Menu" \
+    -theme $HOME/.config/rofi/powermenu.rasi)"
+
+case $chosen in
+    "$lock")
+        $lockcmd
+        ;;
+    "$cancel"|"")
+        exit 0
+        ;;
+    "$logout")
+        swaymsg exit
+        ;;
+    "$reboot")
+        systemctl reboot
+        ;;
+    "$shutdown")
+        systemctl poweroff
+        ;;
+    "$suspend")
+        systemctl suspend
+        ;;
+    "$hibernate")
+        systemctl hibernate
+        ;;
+esac
