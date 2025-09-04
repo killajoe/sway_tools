@@ -21,6 +21,7 @@
 #
 # Author: Johannes Kamprad (joekamprad)
 #
+
 # needed packages: `sudo pacman -Syu --needed grim xdg-user-dirs`
 # this tool creates a screenshot of all your screens in one picture, 
 
