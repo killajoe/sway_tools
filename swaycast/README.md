@@ -22,10 +22,10 @@ Example:
 
 ``` 
 # Start recording (select area)
-bindsym $mod+Shift+y exec ~/path/to/screencast-select
+bindsym $mod+Shift+y exec ~/path/to/swaycast
 
 # Stop recording
-bindsym $mod+Shift+x exec ~/path/to/screencast-select stop
+bindsym $mod+Shift+x exec ~/path/to/swaycast stop
 ```
 
-Replace `~/path/to/screencast-select` with the actual path to your script.
+Replace `~/path/to/swaycast` with the actual path to your script.
