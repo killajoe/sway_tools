@@ -9,7 +9,7 @@
 # needed packages: `sudo pacman -Syu --needed grim slurp swappy xdg-user-dirs wl-clipboard`
 # this tool let you select rectangle area of your screen (-s),  
 # opens it in swappy to edit, and save it under users screenshot path.
-# Or take a screenshot of all displays usding -a (all) 
+# Or take a screenshot of all displays usding -a (all) and automatically saving it in user screenshot path
 
 set -e
 
