@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # joekamprad on sway screenshot helper:
 # needed packages: `sudo pacman -Syu --needed grim xdg-user-dirs`
