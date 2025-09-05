@@ -7,6 +7,12 @@
 #
 # Author: Johannes Kamprad (joekamprad)
 
+#!/usr/bin/env bash
+#
+# keymap_set - Keyboard Layout Selector (Display-server independent)
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 set -euo pipefail
 
 # Colors
@@ -73,15 +79,18 @@ ask_confirmation() {
     [[ "$resp" =~ ^[Yy]([Ee][Ss])?$ ]]
 }
 
-# --- Create vconsole.conf ---
+# --- Create vconsole.conf in systemd-localed style ---
 create_vconsole_conf() {
     local keymap="$1"
     local path="${2:-/tmp/vconsole.conf}"
+
     cat > "$path" << EOF
+# Written by keymap_set
 KEYMAP=$keymap
-FONT=Lat2-Terminus16
-FONT_MAP=
+XKBLAYOUT=$keymap
+XKBMODEL=pc105
 EOF
+
     log "vconsole.conf generated at $path"
 }
 
