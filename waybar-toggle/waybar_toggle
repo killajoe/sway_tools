@@ -1,45 +1,26 @@
 #!/usr/bin/env bash
-#
-# waybar_toggle - hide and unhide waybar instances
+
+# waybar_toggle - toggle disable/enable waybars
 #
 # Copyright (C) 2025 Johannes Kamprad
 #
-# This script is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This script is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this script.  If not, see <https://www.gnu.org/licenses/>.
-#
 # SPDX-License-Identifier: GPL-3.0-or-later
-#
-# Author: Johannes Kamprad (joekamprad)
-#
-
-# hide and unhide waybar instances
-# by drastically killing and reanimate them
-# all configured waybar instances will be killed by first press,
-# and restarted when pressing the configured key again.
-# add the keybind to the script on your own please
 
 STATEFILE="/tmp/waybar_toggle.state"
 
 if pgrep -x waybar > /dev/null; then
-    # Waybar runs = kill
+    # waybar is running lets stop it
     killall waybar
     echo "off" > "$STATEFILE"
 else
-    # Waybar does not run = start all instances
-    for cfg in ~/.config/waybar/config_*.jsonc; do
-        # Derive style path by replacing "config_" with "style_" and ".jsonc" with ".css"
-        style="${cfg/config_/style_}"
-        style="${style%.jsonc}.css"
+    # no waybar running, starting all of them
+    for cfg in ~/.config/waybar/*.jsonc; do
+        # only existing files
+        [[ -f "$cfg" ]] || continue
+
+        # base name should be the same for the jasonc and its css
+        base="${cfg%.jsonc}"
+        style="${base}.css"
 
         if [[ -f "$style" ]]; then
             waybar -c "$cfg" -s "$style" &
