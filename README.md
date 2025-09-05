@@ -4,8 +4,6 @@
 
 **A collection of simple Bash scripts to enhance **Sway** without adding unnecessary complexity.**
 
----
-
 ## Features
 
 - Lightweight Bash scripts, no heavy dependencies
@@ -13,7 +11,6 @@
 - Easy to install and configure
 - Focused on usability and workflow improvements
 
----
 
 ## Tools Overview
              
