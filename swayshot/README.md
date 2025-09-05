@@ -1,4 +1,4 @@
-# flameshot_on_sway:
+# swayshot
 As of i do really need something like flamshot to do screenshots,
 
 add markings and hints or blur parts e.t.c
@@ -23,10 +23,13 @@ Setting up keybinds in Sway
 If you use Sway’s config (usually `$HOME/.config/sway/config`), you can bind keys to run the script:
 
 ``` 
-# take a screenshot of a selection:
-bindsym $mod+Print exec  --no-startup-id $HOME/.config/sway/scripts/screenshot-select
-# Shot of all screens in one pic after releasing print button:
-bindsym --release Print exec --no-startup-id $HOME/.config/sway/scripts/screenshot
+# screenshot
+
+# of the focused window
+bindsym $mod+Print exec  --no-startup-id $HOME/.config/sway/scripts/swayshot -s
+
+# of all screens
+bindsym --release Print exec --no-startup-id $HOME/.config/sway/scripts/swayshot -a
 ```
 
-Replace `$HOME/.config/sway/scripts/screenshot*` with the actual path to the script.
+Replace `$HOME/.config/sway/scripts/swayshot*` with the actual path to the script.
