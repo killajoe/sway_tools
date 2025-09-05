@@ -26,16 +26,13 @@ A collection of simple Bash scripts to enhance **Sway** without adding unnecessa
 * swayshot - screenshot tool
 * waybar_toggle - togle waybar off and on with a shortcut (also for realoding it on changes)
 
-````
 
 Each tool is independent, but together they create a fully usable and efficient Sway desktop environment.
 
----
 
 ## Installation
 
 1. Clone the repository:
-
 ```
 git clone https://github.com/killajoe/sway-tools.git
 cd sway-tools
