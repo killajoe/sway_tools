@@ -10,4 +10,5 @@ click the leave in the bar (panel) to check used, or change profile:
 ![ppd leave waybar](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/power_profiles_switcher/ppd.png)
 
 it will notify of the change :
+
 ![ppd notification](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/power_profiles_switcher/ppd-notify.png)
