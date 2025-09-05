@@ -73,75 +73,73 @@ ask_confirmation() {
     [[ "$resp" =~ ^[Yy]([Ee][Ss])?$ ]]
 }
 
-# --- Safe interactive handler ---
+# --- Create vconsole.conf ---
+create_vconsole_conf() {
+    local keymap="$1"
+    local path="${2:-/tmp/vconsole.conf}"
+    cat > "$path" << EOF
+KEYMAP=$keymap
+FONT=Lat2-Terminus16
+FONT_MAP=
+EOF
+    log "vconsole.conf generated at $path"
+}
+
+# --- Temporary console testing ---
+test_keymap_console() {
+    local keymap="$1"
+    local orig
+    orig=$(localectl status | awk '/VC Keymap/ {print $3}')
+
+    log "Applying temporary keymap '$keymap' for testing..."
+    sudo loadkeys "$keymap"
+
+    echo
+    echo "Type some characters to test the keyboard. Press Enter when done."
+    read -r dummy
+
+    echo -n "Keep this layout permanently? [y/N/r]: "
+    read -r resp
+    case "$resp" in
+        [Yy]|[Yy][Ee][Ss])
+            log "User confirmed layout '$keymap'. Applying system-wide..."
+            sudo localectl set-keymap "$keymap"
+            ;;
+        [Rr])
+            log "Reverting to original layout '$orig' and returning to selection..."
+            sudo loadkeys "$orig"
+            return 2
+            ;;
+        *)
+            log "Reverting to original layout '$orig'"
+            sudo loadkeys "$orig"
+            return 1
+            ;;
+    esac
+}
+
+# --- Handle keymap choice ---
 handle_keymap_choice() {
     local keymap="$1"
-    local original_console original_x11 choice output_file
+    local choice output_file
 
-    if [[ -n "$DISPLAY" ]]; then
-        original_x11=$(setxkbmap -query | awk '/layout/ {print $2}')
-        info "Detected X11 session. Original layout: $original_x11"
-    else
-        original_console=$(localectl status | awk '/VC Keymap/ {print $3}')
-        info "Detected console session. Original layout: $original_console"
-    fi
-
-    echo -e "${BLUE}How do you want to proceed?${NC}"
-    echo "  a = Apply on system (temporary test first, then permanent if confirmed)"
-    echo "  c = Create config file only (safe, no system changes)"
+    echo -e "${BLUE}Do you want to apply the layout or create a config file?${NC}"
+    echo "  a = Apply temporarily and optionally permanently"
+    echo "  c = Create vconsole.conf only (no system change)"
     echo -n "Your choice [a/c]: "
     read -r choice
 
     case "$choice" in
         [Cc])
-            echo -n "Enter path for keymap config file [/tmp/keymap.conf]: "
+            echo -n "Enter path for vconsole.conf [/tmp/vconsole.conf]: "
             read -r output_file
-            output_file="${output_file:-/tmp/keymap.conf}"
-            if [[ -n "$DISPLAY" ]]; then
-                echo "layout: $keymap" > "$output_file"
-                echo "original_layout: $original_x11" >> "$output_file"
-            else
-                echo "keymap: $keymap" > "$output_file"
-                echo "original_keymap: $original_console" >> "$output_file"
-            fi
-            log "Keymap config written to $output_file"
+            output_file="${output_file:-/tmp/vconsole.conf}"
+            create_vconsole_conf "$keymap" "$output_file"
             return 0
             ;;
         [Aa]|"")
-            if [[ -n "$DISPLAY" ]]; then
-                setxkbmap "$keymap"
-                log "Temporary X11 layout '$keymap' applied"
-            else
-                sudo loadkeys "$keymap"
-                log "Temporary console layout '$keymap' applied"
-            fi
-
-            echo
-            echo -e "${BLUE}Test the keyboard layout. Does it work correctly?${NC} [y/N/r]"
-            echo "  y = Keep layout permanently"
-            echo "  n = Revert to original layout"
-            echo "  r = Revert and choose a different layout"
-            echo -n "Your choice: "
-            read -r mode
-
-            case "$mode" in
-                [Yy]|[Yy][Ee][Ss])
-                    log "User confirmed layout '$keymap'"
-                    sudo localectl set-keymap "$keymap"
-                    log "Layout '$keymap' applied system-wide"
-                    return 0
-                    ;;
-                [Rr]|[Rr][Ee][Tt][Uu][Rr][Nn])
-                    log "Reverting layout to original"
-                    [[ -n "$DISPLAY" ]] && setxkbmap "$original_x11" || sudo loadkeys "$original_console"
-                    return 2
-                    ;;
-                *)
-                    log "Reverting layout to original"
-                    [[ -n "$DISPLAY" ]] && setxkbmap "$original_x11" || sudo loadkeys "$original_console"
-                    return 1
-                    ;;
-            esac
+            test_keymap_console "$keymap"
+            return $?
             ;;
         *)
             warn "Unknown choice, aborting"
@@ -178,7 +176,6 @@ Options:
 EOF
 }
 
-# --- Main interactive menu ---
 main() {
     case "${1:-}" in
         -h|--help)
@@ -220,8 +217,9 @@ main() {
             fi
             check_dependencies "minimal"
             warn "Applying keymap without testing!"
-            apply_keymap "$2" "false"
-            exit $?
+            sudo localectl set-keymap "$2"
+            log "Keymap '$2' applied system-wide"
+            exit 0
             ;;
         "")
             check_dependencies "full"
@@ -233,7 +231,7 @@ main() {
             ;;
     esac
 
-    # Interactive mode
+    # Interactive menu
     clear
     echo -e "${BLUE}=== Keyboard Layout Selector ===${NC}"
     show_current_layout
