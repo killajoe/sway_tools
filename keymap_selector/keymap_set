@@ -7,7 +7,6 @@
 #
 # Author: Johannes Kamprad (joekamprad)
 
-
 set -euo pipefail
 
 # Colors
@@ -26,10 +25,14 @@ cleanup() { [[ -f "/tmp/keymaps.txt" ]] && rm -f "/tmp/keymaps.txt"; }
 trap cleanup EXIT
 
 check_dependencies() {
-    local op="${1:-full}" missing=()
+    local op="${1:-full}"
+    local missing=()
     command -v localectl >/dev/null || missing+=("localectl")
     [[ "$op" == "full" ]] && ! command -v dialog >/dev/null && missing+=("dialog")
-    [[ ${#missing[@]} -gt 0 ]] && { error "Missing: ${missing[*]}"; exit 1; }
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        error "Missing required dependencies: ${missing[*]}"
+        exit 1
+    fi
 }
 
 get_current_keymap() {
@@ -51,11 +54,15 @@ generate_keymap_list() {
 }
 
 show_keymap_dialog() {
-    local tmp="/tmp/keymaps.txt" args=() cur
+    local tmp="/tmp/keymaps.txt"
+    local args=()
+    local cur
     cur=$(get_current_keymap)
     args=(--title "Keyboard Layout Selector" --cancel-label "Cancel" --ok-label "Select" \
           --default-item "$cur" --menu "Choose a keyboard layout:\nCurrent: $cur" 20 60 10)
-    while IFS= read -r k; do [[ -n "$k" ]] && args+=("$k" "$k"); done < "$tmp"
+    while IFS= read -r k; do
+        [[ -n "$k" ]] && args+=("$k" "$k")
+    done < "$tmp"
     local sel
     sel=$(dialog "${args[@]}" 2>&1 >/dev/tty) && echo "$sel"
 }
@@ -66,15 +73,17 @@ ask_confirmation() {
     [[ "$resp" =~ ^[Yy]([Ee][Ss])?$ ]]
 }
 
-# --- New safe interactive handler ---
+# --- Safe interactive handler ---
 handle_keymap_choice() {
-    local keymap="$1" original_console original_x11 choice output_file
+    local keymap="$1"
+    local original_console original_x11 choice output_file
+
     if [[ -n "$DISPLAY" ]]; then
         original_x11=$(setxkbmap -query | awk '/layout/ {print $2}')
-        info "Detected X11. Original layout: $original_x11"
+        info "Detected X11 session. Original layout: $original_x11"
     else
         original_console=$(localectl status | awk '/VC Keymap/ {print $3}')
-        info "Detected console. Original layout: $original_console"
+        info "Detected console session. Original layout: $original_console"
     fi
 
     echo -e "${BLUE}How do you want to proceed?${NC}"
@@ -144,12 +153,16 @@ handle_keymap_choice() {
 set_keymap_direct() {
     local keymap="$1"
     if ! localectl list-keymaps | grep -q "^$keymap$"; then
-        error "Invalid keymap: $keymap"; return 1
+        error "Invalid keymap: $keymap"
+        return 1
     fi
     handle_keymap_choice "$keymap"
 }
 
-list_keymaps() { log "Available layouts:"; localectl list-keymaps; }
+list_keymaps() {
+    log "Available layouts:"
+    localectl list-keymaps
+}
 
 show_help() {
     cat << EOF
@@ -168,17 +181,59 @@ EOF
 # --- Main interactive menu ---
 main() {
     case "${1:-}" in
-        -h|--help) show_help; exit 0 ;;
-        -l|--list) check_dependencies "minimal"; list_keymaps; exit 0 ;;
-        -c|--current) check_dependencies "minimal"; show_current_layout; exit 0 ;;
-        -s|--set) [[ -z "${2:-}" ]] && { error "Keymap required"; exit 1; } check_dependencies "minimal"; set_keymap_direct "$2"; exit $? ;;
-        -t|--test) [[ -z "${2:-}" ]] && { error "Keymap required"; exit 1; } check_dependencies "minimal"; handle_keymap_choice "$2"; exit $? ;;
-        -f|--force) [[ -z "${2:-}" ]] && { error "Keymap required"; exit 1; } check_dependencies "minimal"; warn "Applying keymap without testing!"; apply_keymap "$2" "false"; exit $? ;;
-        "") check_dependencies "full" ;;
-        *) error "Unknown option: $1"; show_help; exit 1 ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -l|--list)
+            check_dependencies "minimal"
+            list_keymaps
+            exit 0
+            ;;
+        -c|--current)
+            check_dependencies "minimal"
+            show_current_layout
+            exit 0
+            ;;
+        -s|--set)
+            if [[ -z "${2:-}" ]]; then
+                error "Keymap required"
+                exit 1
+            fi
+            check_dependencies "minimal"
+            set_keymap_direct "$2"
+            exit $?
+            ;;
+        -t|--test)
+            if [[ -z "${2:-}" ]]; then
+                error "Keymap required"
+                exit 1
+            fi
+            check_dependencies "minimal"
+            handle_keymap_choice "$2"
+            exit $?
+            ;;
+        -f|--force)
+            if [[ -z "${2:-}" ]]; then
+                error "Keymap required"
+                exit 1
+            fi
+            check_dependencies "minimal"
+            warn "Applying keymap without testing!"
+            apply_keymap "$2" "false"
+            exit $?
+            ;;
+        "")
+            check_dependencies "full"
+            ;;
+        *)
+            error "Unknown option: $1"
+            show_help
+            exit 1
+            ;;
     esac
 
-    # Interactive menu
+    # Interactive mode
     clear
     echo -e "${BLUE}=== Keyboard Layout Selector ===${NC}"
     show_current_layout
