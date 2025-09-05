@@ -27,7 +27,7 @@ A collection of simple Bash scripts to enhance **Sway** without adding unnecessa
 * waybar_toggle - togle waybar off and on with a shortcut (also for realoding it on changes)
 
 
-Each tool is independent, but together they create a fully usable and efficient Sway desktop environment.
+Each tool is independent and can be used also in wayland based Desktops.
 
 
 ## Installation
@@ -54,7 +54,6 @@ Contributions are welcome! If you want to:
 
 Please submit a pull request or open an issue.
 
----
 
 ## License
 
