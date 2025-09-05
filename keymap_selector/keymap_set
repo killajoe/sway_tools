@@ -7,12 +7,6 @@
 #
 # Author: Johannes Kamprad (joekamprad)
 
-#!/usr/bin/env bash
-#
-# keymap_set - Keyboard Layout Selector (Display-server independent)
-#
-# SPDX-License-Identifier: GPL-3.0-or-later
-
 set -euo pipefail
 
 # Colors
@@ -30,33 +24,50 @@ info() { echo -e "${BLUE}[INFO]${NC} $*" >&2; }
 cleanup() { [[ -f "/tmp/keymaps.txt" ]] && rm -f "/tmp/keymaps.txt"; }
 trap cleanup EXIT
 
+# --- Dependencies ---
 check_dependencies() {
     local op="${1:-full}"
     local missing=()
     command -v localectl >/dev/null || missing+=("localectl")
     [[ "$op" == "full" ]] && ! command -v dialog >/dev/null && missing+=("dialog")
     if [[ ${#missing[@]} -gt 0 ]]; then
-        error "Missing required dependencies: ${missing[*]}"
+        error "Missing dependencies: ${missing[*]}"
         exit 1
     fi
 }
 
+# --- Current settings ---
 get_current_keymap() {
-    local current
-    current=$(localectl status | awk '/X11 Layout/ {print $3}')
-    [[ -z "$current" ]] && current=$(localectl status | awk '/VC Keymap/ {print $3}')
-    echo "${current:-unknown}"
+    local cur
+    cur=$(localectl status | awk '/VC Keymap/ {print $3}')
+    echo "${cur:---}"
 }
 
-show_current_layout() {
-    info "Current keyboard layout: $(get_current_keymap)"
+get_current_x11_layout() {
+    local cur
+    cur=$(localectl status | awk '/X11 Layout/ {print $3}')
+    echo "${cur:---}"
 }
 
+get_current_locale() {
+    local cur
+    cur=$(localectl status | awk '/System Locale/ {print $3}')
+    echo "${cur:---}"
+}
+
+show_current_settings() {
+    info "Current settings:"
+    echo "  VC Keymap : $(get_current_keymap)"
+    echo "  X11 Layout: $(get_current_x11_layout)"
+    echo "  Locale    : $(get_current_locale)"
+}
+
+# --- Generate keymap list ---
 generate_keymap_list() {
     local tmp="/tmp/keymaps.txt"
-    log "Fetching available keyboard layouts..."
+    log "Fetching available VC keymaps..."
     localectl list-keymaps > "$tmp" 2>/dev/null || { error "Failed to fetch keymaps"; return 1; }
-    log "Found $(wc -l < "$tmp") layouts"
+    log "Found $(wc -l < "$tmp") VC keymaps"
 }
 
 show_keymap_dialog() {
@@ -66,29 +77,22 @@ show_keymap_dialog() {
     cur=$(get_current_keymap)
     args=(--title "Keyboard Layout Selector" --cancel-label "Cancel" --ok-label "Select" \
           --default-item "$cur" --menu "Choose a keyboard layout:\nCurrent: $cur" 20 60 10)
-    while IFS= read -r k; do
-        [[ -n "$k" ]] && args+=("$k" "$k")
-    done < "$tmp"
+    while IFS= read -r k; do [[ -n "$k" ]] && args+=("$k" "$k"); done < "$tmp"
     local sel
     sel=$(dialog "${args[@]}" 2>&1 >/dev/tty) && echo "$sel"
 }
 
-ask_confirmation() {
-    echo -e "${BLUE}Would you like to modify the keyboard layout?${NC} [y/N]: "
-    read -r resp
-    [[ "$resp" =~ ^[Yy]([Ee][Ss])?$ ]]
-}
-
-# --- Create vconsole.conf in systemd-localed style ---
+# --- Create systemd-localed vconsole.conf ---
 create_vconsole_conf() {
-    local keymap="$1"
-    local path="${2:-/tmp/vconsole.conf}"
+    local vc="$1" x11="$2" model="${3:-pc105}" variant="${4:-}" options="${5:-}" path="${6:-/tmp/vconsole.conf}"
 
     cat > "$path" << EOF
 # Written by keymap_set
-KEYMAP=$keymap
-XKBLAYOUT=$keymap
-XKBMODEL=pc105
+KEYMAP=$vc
+XKBLAYOUT=$x11
+XKBMODEL=$model
+XKBVARIANT=$variant
+XKBOPTIONS=$options
 EOF
 
     log "vconsole.conf generated at $path"
@@ -98,11 +102,9 @@ EOF
 test_keymap_console() {
     local keymap="$1"
     local orig
-    orig=$(localectl status | awk '/VC Keymap/ {print $3}')
-
-    log "Applying temporary keymap '$keymap' for testing..."
+    orig=$(get_current_keymap)
+    log "Applying temporary keymap '$keymap' for console testing..."
     sudo loadkeys "$keymap"
-
     echo
     echo "Type some characters to test the keyboard. Press Enter when done."
     read -r dummy
@@ -112,7 +114,7 @@ test_keymap_console() {
     case "$resp" in
         [Yy]|[Yy][Ee][Ss])
             log "User confirmed layout '$keymap'. Applying system-wide..."
-            sudo localectl set-keymap "$keymap"
+            return 0
             ;;
         [Rr])
             log "Reverting to original layout '$orig' and returning to selection..."
@@ -127,28 +129,64 @@ test_keymap_console() {
     esac
 }
 
-# --- Handle keymap choice ---
-handle_keymap_choice() {
-    local keymap="$1"
-    local choice output_file
+# --- Set X11 layout ---
+set_x11_layout() {
+    local layout="$1" model="${2:-pc105}" variant="${3:-}" options="${4:-}"
+    sudo localectl set-x11-keymap "$layout" "$model" "$variant" "$options"
+    log "X11 layout '$layout' applied"
+}
 
-    echo -e "${BLUE}Do you want to apply the layout or create a config file?${NC}"
-    echo "  a = Apply temporarily and optionally permanently"
-    echo "  c = Create vconsole.conf only (no system change)"
-    echo -n "Your choice [a/c]: "
+# --- Set system locale ---
+set_system_locale() {
+    local locale="$1"
+    sudo localectl set-locale LANG="$locale"
+    log "System locale set to '$locale'"
+}
+
+# --- Interactive choice ---
+handle_keymap_choice() {
+    local vc="$1"
+
+    echo -e "${BLUE}Do you want to apply layout or just generate vconsole.conf?${NC}"
+    echo "  a = Apply (console + X11)"
+    echo "  c = Create vconsole.conf only"
+    echo -n "Choice [a/c]: "
     read -r choice
 
     case "$choice" in
         [Cc])
+            local path
             echo -n "Enter path for vconsole.conf [/tmp/vconsole.conf]: "
-            read -r output_file
-            output_file="${output_file:-/tmp/vconsole.conf}"
-            create_vconsole_conf "$keymap" "$output_file"
+            read -r path
+            path="${path:-/tmp/vconsole.conf}"
+
+            # Ask X11 settings
+            local x11 model variant options
+            echo -n "Enter X11 layout (default: $vc): "
+            read -r x11
+            x11="${x11:-$vc}"
+            echo -n "Enter keyboard model (default: pc105): "
+            read -r model
+            model="${model:-pc105}"
+            echo -n "Enter variant (optional): "
+            read -r variant
+            echo -n "Enter options (optional): "
+            read -r options
+
+            create_vconsole_conf "$vc" "$x11" "$model" "$variant" "$options" "$path"
             return 0
             ;;
         [Aa]|"")
-            test_keymap_console "$keymap"
-            return $?
+            local res
+            test_keymap_console "$vc"
+            res=$?
+            [[ $res -eq 0 ]] && sudo localectl set-keymap "$vc"
+            # Ask X11 layout
+            echo -n "Enter X11 layout to apply (default: same as VC '$vc'): "
+            read -r x11
+            x11="${x11:-$vc}"
+            set_x11_layout "$x11"
+            return $res
             ;;
         *)
             warn "Unknown choice, aborting"
@@ -157,95 +195,49 @@ handle_keymap_choice() {
     esac
 }
 
-set_keymap_direct() {
+set_keymap_interactive() {
     local keymap="$1"
-    if ! localectl list-keymaps | grep -q "^$keymap$"; then
-        error "Invalid keymap: $keymap"
-        return 1
-    fi
+    [[ -z "$keymap" ]] && return 1
     handle_keymap_choice "$keymap"
 }
 
-list_keymaps() {
-    log "Available layouts:"
-    localectl list-keymaps
-}
-
+list_keymaps() { localectl list-keymaps; }
 show_help() {
     cat << EOF
 Usage: $(basename "$0") [OPTIONS]
 
 Options:
-  -h, --help        Show this help
-  -l, --list        List all keymaps
-  -c, --current     Show current keymap
-  -s, --set KEYMAP  Set keymap interactively
-  -t, --test KEYMAP Test keymap interactively (apply or config)
-  -f, --force KEYMAP Force set keymap system-wide
+  -h --help        Show this help
+  -l --list        List all keymaps
+  -c --current     Show current settings
+  -s --set KEYMAP  Set keymap interactively
+  -t --test KEYMAP Test keymap interactively (apply or config)
+  -f --force KEYMAP Force set VC keymap + X11 layout immediately
+  --locale LOCALE  Set system locale (LANG)
 EOF
 }
 
 main() {
     case "${1:-}" in
-        -h|--help)
-            show_help
-            exit 0
-            ;;
-        -l|--list)
-            check_dependencies "minimal"
-            list_keymaps
-            exit 0
-            ;;
-        -c|--current)
-            check_dependencies "minimal"
-            show_current_layout
-            exit 0
-            ;;
-        -s|--set)
-            if [[ -z "${2:-}" ]]; then
-                error "Keymap required"
-                exit 1
-            fi
-            check_dependencies "minimal"
-            set_keymap_direct "$2"
-            exit $?
-            ;;
-        -t|--test)
-            if [[ -z "${2:-}" ]]; then
-                error "Keymap required"
-                exit 1
-            fi
-            check_dependencies "minimal"
-            handle_keymap_choice "$2"
-            exit $?
-            ;;
-        -f|--force)
-            if [[ -z "${2:-}" ]]; then
-                error "Keymap required"
-                exit 1
-            fi
-            check_dependencies "minimal"
-            warn "Applying keymap without testing!"
-            sudo localectl set-keymap "$2"
-            log "Keymap '$2' applied system-wide"
-            exit 0
-            ;;
-        "")
-            check_dependencies "full"
-            ;;
-        *)
-            error "Unknown option: $1"
-            show_help
-            exit 1
-            ;;
+        -h|--help) show_help; exit 0 ;;
+        -l|--list) check_dependencies "minimal"; list_keymaps; exit 0 ;;
+        -c|--current) check_dependencies "minimal"; show_current_settings; exit 0 ;;
+        -s|--set) check_dependencies "full"; set_keymap_interactive "$2"; exit $? ;;
+        -t|--test) check_dependencies "full"; set_keymap_interactive "$2"; exit $? ;;
+        -f|--force) check_dependencies "full"; sudo localectl set-keymap "$2"; set_x11_layout "$2"; exit 0 ;;
+        --locale) [[ -n "${2:-}" ]] && set_system_locale "$2"; exit 0 ;;
+        "") check_dependencies "full" ;;
+        *) error "Unknown option: $1"; show_help; exit 1 ;;
     esac
 
     # Interactive menu
     clear
-    echo -e "${BLUE}=== Keyboard Layout Selector ===${NC}"
-    show_current_layout
+    echo -e "${BLUE}=== Keyboard & Locale Selector ===${NC}"
+    show_current_settings
     echo
-    ask_confirmation || { info "Cancelled"; exit 0; }
+    echo -n "Modify keyboard layout? [y/N]: "
+    read -r resp
+    [[ ! "$resp" =~ ^[Yy]([Ee][Ss])?$ ]] && { info "Cancelled"; exit 0; }
 
     generate_keymap_list || exit 1
 
@@ -253,11 +245,11 @@ main() {
         local sel
         if sel=$(show_keymap_dialog); then
             echo
-            handle_keymap_choice "$sel"
+            set_keymap_interactive "$sel"
             local res=$?
             case $res in
-                0) info "Operation successful. Exiting."; break ;;
-                1) warn "Operation reverted. Exiting."; break ;;
+                0) info "Operation successful"; break ;;
+                1) warn "Operation reverted"; break ;;
                 2) info "Returning to selection..."; continue ;;
             esac
         else
