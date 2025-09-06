@@ -1,22 +1,33 @@
 #!/usr/bin/env bash
 
-# swaycast - Screencast helper for Sway
-# Copyright (C) 2025 Johannes Kamprad
+# swaycast - very simple Screencast helper for Sway
+#
+# Copyright (C) 2025 joekamprad
 # SPDX-License-Identifier: GPL-3.0-or-later
-
-# needed packages: `sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs`
+#
+# needed packages: `sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs inotify-tools`
 # wl-screenrec currently only in AUR will be added to EndeavourOS repo in case of release
 # this tool lets you select rectangle area of your screen [$mod+shift+y], and start recording that area.
+# to also include audio use [$mod+shift+a]
 # to stop press [$mod+shift+x] or use: swaycast stop
+# in case it saves a log under /tmp/swaycast.log to debug errors
 
-# stop script
+LOGFILE="/tmp/swaycast.log"
+mkdir -p "$(dirname "$LOGFILE")"
+exec >>"$LOGFILE" 2>&1
+
 PIDFILE="/tmp/wl-screenrec.pid"
+AUDIOFLAG="/tmp/wl-screenrec.audio"
 
 if [[ "$1" == "stop" ]]; then
   PID=$(cat "$PIDFILE" 2>/dev/null)
   if [ -n "$PID" ]; then
     kill "$PID"
-    notify-send -i media-playback-stop "Screencast stopped" "will now get converted and saved (may take some time)"
+    if [[ -f "$AUDIOFLAG" ]]; then
+      notify-send -i media-playback-stop "Screencast (with audio) stopped" "finalizing file, please wait..."
+    else
+      notify-send -i media-playback-stop "Screencast stopped" "finalizing file, please wait..."
+    fi
     rm -f "$PIDFILE"
   else
     notify-send -i dialog-error "No running Screencast found"
@@ -31,7 +42,7 @@ if [ -z "$VIDEOS_DIR" ]; then
 fi
 
 SCREENCAST_DIR="$VIDEOS_DIR/screencasts"
-mkdir -p "$VIDEOS_DIR"
+mkdir -p "$SCREENCAST_DIR"
 DATE=$(date '+%Y-%m-%d_%H-%M-%S')
 FILENAME="screencast_$DATE.mp4"
 TARGET="$SCREENCAST_DIR/$FILENAME"
@@ -39,15 +50,40 @@ TARGET="$SCREENCAST_DIR/$FILENAME"
 # Select recording area
 GEOM=$(slurp)
 
-# start recording (in the background)
-wl-screenrec -g "$GEOM" -f "$TARGET" &
+# Build command (add audio if requested)
+if [[ "$1" == "audio" ]]; then
+  wl-screenrec -g "$GEOM" --audio -f "$TARGET" &
+  touch "$AUDIOFLAG"
+else
+  wl-screenrec -g "$GEOM" -f "$TARGET" &
+  rm -f "$AUDIOFLAG"
+fi
+
 PID=$!
 
-notify-send -i media-record "Screencast running" "stop with: [$mod+shift+x] or kill $PID"
+notify-send -i media-record "Screencast running" "stop with shortcut <b>mod+shift+X</b> or kill $PID"
 
-# PID gets saved to be used for stop script
+# Save PID
 echo $PID > "$PIDFILE"
 
-# Wait for recording to finish, then notify
+# Wait for recording to finish
 wait $PID
-notify-send -i document-save "Screencast saved" "$TARGET"
+
+# Wait until file is fully written/closed
+last_size=0
+for i in {1..30}; do
+  size=$(stat -c %s "$TARGET" 2>/dev/null || echo 0)
+  if [[ "$size" -eq "$last_size" && "$size" -gt 0 ]]; then
+    break
+  fi
+  last_size=$size
+  sleep 1
+done
+
+# Final notification (different text if audio was enabled)
+if [[ -f "$AUDIOFLAG" ]]; then
+  notify-send -i document-save "Screencast (with audio) saved" "$TARGET"
+  rm -f "$AUDIOFLAG"
+else
+  notify-send -i document-save "Screencast saved" "$TARGET"
+fi
