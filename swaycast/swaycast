@@ -47,3 +47,7 @@ notify-send -i media-record "Screencast running" "stop with: [$mod+shift+x] or k
 
 # PID gets saved to be used for stop script
 echo $PID > "$PIDFILE"
+
+# Wait for recording to finish, then notify
+wait $PID
+notify-send -i document-save "Screencast saved" "$TARGET"
