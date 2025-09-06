@@ -13,7 +13,7 @@ with grim and slurp and then opens it in swappy so that you can add your markers
 the edited screenshot is then saved in the screenshot directory ($HOME/Pictures/screenshots)
 
 
-![animation](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/flameshot_on_sway/screenshot-flamshotalike.gif)
+![animation](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/swayshot/screenshot-flamshotalike.gif)
 
 
 # How it works
