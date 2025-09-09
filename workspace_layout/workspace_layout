@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# workspace_layout - example to create a workspace with a fixed layout on sway startup
+# this example needs telegram to be set to bind to the workspace in addition: 
+# `assign [app_id="org.telegram.desktop"] $ws2`  in sway config (or dropin)
+#
+# Copyright (C) 2025 Johannes Kamprad
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# Layout:
+#┌──────────────────────────┐┌───────────────────┐
+#│ glances                  ││ telegram          │
+#│                          ││                   │
+#│                          ││                   │
+#│                          ││                   │
+#│                          ││                   │
+#│                          ││                   │
+#│                          ││                   │
+#│                          ││                   │
+#│                          ││                   │
+#└──────────────────────────┘│                   │
+#┌──────────────────────────┐│                   │
+#│ journal                  ││                   │
+#│                          ││                   │
+#│                          ││                   │
+#└──────────────────────────┘└───────────────────┘
+
+WS=$ws2
+
+# Select workspace + prepare horizontal layout
+swaymsg "workspace $WS; layout splith"
+
+# --- Left container: Glances on top, Journal below ---
+# Start Glances in kitty terminal and set id to glances
+swaymsg 'exec kitty --class=glances -e glances'
+sleep 0.3  # small delay to ensure Glances is mapped
+
+# Split left column vertically
+swaymsg '[app_id="glances"] focus; split v'
+
+# Start Journal in kitty terminal and set id to journal
+swaymsg 'exec kitty --class=journal -e journalctl -f'
+sleep 0.3  # delay for Journal
+swaymsg '[app_id="journal"] resize set height 20ppt'
+
+# --- Right container: Telegram ---
+# Focus back on left container, select parent, horizontal split
+swaymsg '[app_id="glances"] focus; focus parent; split h; focus right'
+
+# Start Telegram
+swaymsg 'exec Telegram'
