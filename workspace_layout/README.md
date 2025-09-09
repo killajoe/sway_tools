@@ -7,4 +7,4 @@ this example needs telegram to be set to bind to the workspace in addition:
 
 
 # Layout:
-
+![layout](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/workspace_layout/workspace_layout.png)
