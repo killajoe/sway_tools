@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# gracefuilly_exit - Gracefully close all open windows in Sway with visible notifications
+#
+# Copyright (C) 2025 Johannes Kamprad
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# to be used instead of simple run `swaymsg exit` in your powermenu or for keybind.
+
+WAIT_TIME=5
+NOTIFY_DELAY=2
+ICON="system-log-out"
+
+# Get all open windows reliably (recursive search)
+windows=$(swaymsg -t get_tree | jq -r '
+  .. | objects 
+  | select(.type=="con" and (.app_id != null or .name != null)) 
+  | "\(.id):\(.app_id // .name)"'
+)
+
+if [ -z "$windows" ]; then
+    notify-send -i "$ICON" "Sway Exit" "No open windows detected. Exiting Sway..."
+    sleep $NOTIFY_DELAY
+    swaymsg exit
+    exit 0
+fi
+
+# Build a list for the notification
+window_list=$(echo "$windows" | awk -F: '{print "- " $2}' | paste -sd '\n' -)
+
+# Notify user which windows will be closed
+notify-send -i "$ICON" "Sway Exit" "Closing the following windows:\n$window_list"
+sleep $NOTIFY_DELAY  # Give user time to see the notification
+
+# Close all windows
+for win in $windows; do
+    win_id=$(echo "$win" | cut -d: -f1)
+    swaymsg "[con_id=$win_id] kill"
+done
+
+# Wait for windows to close
+sleep $WAIT_TIME
+
+# Final notification
+notify-send -i "$ICON" "Sway Exit" "All windows closed. Exiting Sway..."
+sleep $NOTIFY_DELAY
+
+# Exit Sway
+swaymsg exit
