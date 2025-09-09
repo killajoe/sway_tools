@@ -1,4 +1,5 @@
-# gracefuilly_exit - Gracefully close all open windows in Sway with visible notifications
+# gracefuilly_exit
+Gracefully close all open windows in Sway with visible notifications
 
 to be used instead of simple run `swaymsg exit` in your powermenu or for keybind.
 
