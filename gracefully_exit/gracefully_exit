@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# gracefuilly_exit - Gracefully close all open windows in Sway with visible notifications
+# gracefuilly_exit - Gracefully close all open windows in Sway
+# with visible notifications, and running `swaymsg exit`
+# to quit the session.
 #
 # Copyright (C) 2025 Johannes Kamprad
 #
