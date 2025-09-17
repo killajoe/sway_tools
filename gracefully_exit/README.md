@@ -7,6 +7,6 @@ with visible notifications, and running `swaymsg exit` `reboot` `poweroff` to qu
 ./exit-sway.sh {exit|reboot|poweroff}
 
 
-to be used instead of simple run `swaymsg exit` `reboot` `poweroff` in your powermenu or for keybind.
+to be used instead of simple run `swaymsg exit` `reboot` `poweroff` in your [powermenu](https://github.com/killajoe/sway_tools/tree/main/powermenu) or for keybind.
 
 ![gracefull_exit notifications](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/gracefully_exit/graceful_exit.png)
