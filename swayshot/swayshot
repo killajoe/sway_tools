@@ -7,7 +7,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # needed packages: `sudo pacman -Syu --needed grim slurp swappy xdg-user-dirs wl-clipboard`
-# this tool let you select rectangle area of your screen (-s),  
+# this tool let you select rectangle area of your screen (-s),
 # opens it in swappy to edit, and save it under users screenshot path.
 # Or take a screenshot of all displays usding -a (all), and automatically saving it in user screenshot path
 
@@ -17,25 +17,41 @@ usage() {
     echo "Usage: $0 [OPTION]"
     echo "  -a, --all      Screenshot all screens"
     echo "  -s, --select   Select a region and edit with swappy"
+    echo "  -d, --delay X  Delay X seconds before taking the screenshot"
     exit 1
 }
 
+# Default values
+DELAY=0
+
 # Parse arguments
-if [[ $# -ne 1 ]]; then
+if [[ $# -lt 1 ]]; then
     usage
 fi
 
-case "$1" in
-    -a|--all)
-        MODE="all"
-        ;;
-    -s|--select)
-        MODE="select"
-        ;;
-    *)
-        usage
-        ;;
-esac
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -a|--all)
+            MODE="all"
+            shift
+            ;;
+        -s|--select)
+            MODE="select"
+            shift
+            ;;
+        -d|--delay)
+            DELAY="$2"
+            shift 2
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+if [ -z "$MODE" ]; then
+    usage
+fi
 
 # Try to get the XDG Pictures directory using xdg-user-dirs
 PICTURES_DIR=$(xdg-user-dir PICTURES 2>/dev/null)
@@ -50,14 +66,29 @@ FILENAME="screenshot_$DATE.png"
 FILEPATH="$SCREENSHOT_DIR/$FILENAME"
 
 if [ "$MODE" = "all" ]; then
+    # If delay set, sleep BEFORE taking the screenshot for "all" mode
+    if [ "$DELAY" != "0" ]; then
+        sleep "$DELAY"
+    fi
+
     # Screenshot all screens
     grim "$FILEPATH"
     notify-send "Screenshot created" "here: $FILEPATH" -i "$FILEPATH"
     echo "Saved: $FILEPATH"
+
 elif [ "$MODE" = "select" ]; then
-    # Screenshot selectable region and edit with swappy
+    # For select: let user immediately select area, then (optionally) wait DELAY seconds BEFORE capture
     TMPFILE="/tmp/swappy_$$.png"
-    grim -g "$(slurp)" "$TMPFILE"
+    # get geometry from slurp first (user selects now)
+    GEOM="$(slurp)"
+
+    # now wait if requested so the capture happens after the delay
+    if [ "$DELAY" != "0" ]; then
+        sleep "$DELAY"
+    fi
+
+    # capture the previously selected geometry
+    grim -g "$GEOM" "$TMPFILE"
     swappy -f "$TMPFILE"
 
     # Find latest swappy file (usually saved as $HOME/swappy-*.png)
@@ -68,7 +99,7 @@ elif [ "$MODE" = "select" ]; then
         notify-send "Screenshot saved and copied to clipboard" "$FILEPATH" -i "$FILEPATH"
         echo "Saved & copied: $FILEPATH"
     else
-        notify-send -i dialog-warning "Screenshot canceled or not saved"
+        notify-send -i dialog-warning "Screenshot canceled..."
         echo "No screenshot saved."
     fi
     rm -f "$TMPFILE"
