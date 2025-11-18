@@ -34,6 +34,8 @@ bindsym --release Print exec --no-startup-id $HOME/.config/sway/scripts/swayshot
 # 5 seconds delay before selected region will get shot
 bindsym $mod+Shift+Print exec  --no-startup-id $HOME/.config/sway/scripts/swayshot -s -d 5
 
+```
+
 Options from commandline:
 -a, --all      Screenshot all screens"
 -s, --select   Select a region and edit with swappy"
