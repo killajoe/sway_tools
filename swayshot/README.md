@@ -25,11 +25,18 @@ If you use Sway’s config (usually `$HOME/.config/sway/config`), you can bind k
 ``` 
 # screenshot
 
-# of the focused window
+# select region
 bindsym $mod+Print exec  --no-startup-id $HOME/.config/sway/scripts/swayshot -s
 
 # of all screens
 bindsym --release Print exec --no-startup-id $HOME/.config/sway/scripts/swayshot -a
-```
+
+# 5 seconds delay before selected region will get shot
+bindsym $mod+Shift+Print exec  --no-startup-id $HOME/.config/sway/scripts/swayshot -s -d 5
+
+Options from commandline:
+-a, --all      Screenshot all screens"
+-s, --select   Select a region and edit with swappy"
+-d, --delay X  Delay X seconds before taking the screenshot"
 
 Replace `$HOME/.config/sway/scripts/swayshot*` with the actual path to the script.
