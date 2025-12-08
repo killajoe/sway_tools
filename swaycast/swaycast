@@ -9,7 +9,7 @@
 # wl-screenrec currently only in AUR will be added to EndeavourOS repo in case of release
 # this tool lets you select rectangle area of your screen [swaycast], and start recording that area.
 # to also include audio use [swaycast audio]
-# to stop press [swaycast stop] or use: swaycast stop
+# to stop [swaycast stop]
 # help: swaycast help
 
 LOGFILE="/tmp/swaycast.log"
