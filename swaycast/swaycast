@@ -19,6 +19,25 @@ exec >>"$LOGFILE" 2>&1
 PIDFILE="/tmp/wl-screenrec.pid"
 AUDIOFLAG="/tmp/wl-screenrec.audio"
 
+# === Check required dependencies ===
+REQUIRED_PKGS=(slurp wl-screenrec xdg-user-dir inotifywait notify-send)
+
+missing=()
+for pkg in "${REQUIRED_PKGS[@]}"; do
+  if ! command -v "$pkg" &>/dev/null; then
+    missing+=("$pkg")
+  fi
+done
+
+if (( ${#missing[@]} > 0 )); then
+  notify-send -u critical -i dialog-error \
+    "Missing dependencies for swaycast" \
+    "Please install: ${missing[*]}"
+  echo "Error: Missing dependencies: ${missing[*]}" >&2
+  exit 1
+fi
+# ====================================
+
 if [[ "$1" == "stop" ]]; then
   PID=$(cat "$PIDFILE" 2>/dev/null)
   if [ -n "$PID" ]; then
