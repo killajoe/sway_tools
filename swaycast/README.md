@@ -22,10 +22,13 @@ Example:
 
 ``` 
 # Start recording (select area)
-bindsym $mod+Shift+y exec ~/path/to/swaycast
+bindsym $mod+Shift+y exec $HOME/.config/sway/scripts/swaycast
+
+# Start recording (select area, with audio)
+bindsym $mod+Shift+a exec $HOME/.config/sway/scripts/swaycast audio
 
 # Stop recording
-bindsym $mod+Shift+x exec ~/path/to/swaycast stop
+bindsym $mod+Shift+x exec $HOME/.config/sway/scripts/swaycast stop
 ```
 
 Replace `~/path/to/swaycast` with the actual path to your script.
