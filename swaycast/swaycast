@@ -7,9 +7,9 @@
 #
 # needed packages: `sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs inotify-tools`
 # wl-screenrec currently only in AUR will be added to EndeavourOS repo in case of release
-# this tool lets you select rectangle area of your screen [$mod+shift+y], and start recording that area.
-# to also include audio use [$mod+shift+a]
-# to stop press [$mod+shift+x] or use: swaycast stop
+# this tool lets you select rectangle area of your screen [swaycast], and start recording that area.
+# to also include audio use [swaycast audio]
+# to stop press [swaycast stop] or use: swaycast stop
 # in case it saves a log under /tmp/swaycast.log to debug errors
 
 LOGFILE="/tmp/swaycast.log"
