@@ -5,12 +5,12 @@
 # Copyright (C) 2025 joekamprad
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-# needed packages: `sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs inotify-tools`
+# needed packages: sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs inotify-tools
 # wl-screenrec currently only in AUR will be added to EndeavourOS repo in case of release
 # this tool lets you select rectangle area of your screen [swaycast], and start recording that area.
 # to also include audio use [swaycast audio]
 # to stop press [swaycast stop] or use: swaycast stop
-# in case it saves a log under /tmp/swaycast.log to debug errors
+# help: swaycast help
 
 LOGFILE="/tmp/swaycast.log"
 mkdir -p "$(dirname "$LOGFILE")"
@@ -18,6 +18,10 @@ exec >>"$LOGFILE" 2>&1
 
 PIDFILE="/tmp/wl-screenrec.pid"
 AUDIOFLAG="/tmp/wl-screenrec.audio"
+
+# Save original stdout/stderr for help and error messages
+ORIG_STDOUT=$(tty)
+ORIG_STDERR=$(tty)
 
 # === Check required dependencies ===
 REQUIRED_PKGS=(slurp wl-screenrec xdg-user-dir inotifywait notify-send)
@@ -38,12 +42,59 @@ if (( ${#missing[@]} > 0 )); then
 fi
 # ====================================
 
+# --- Option handling ---
+if [[ $# -gt 0 ]]; then
+    case "$1" in
+        help|--help)
+            cat << EOF >"$ORIG_STDOUT"
+Swaycast - Screencast script for Sway
+Source: https://github.com/killajoe/sway_tools/tree/main/swaycast
+Copyright (C) 2025 joekamprad
+License: GPL-3.0-or-later
+
+Usage: swaycast [audio|stop|help]
+
+Options:
+  audio      Record with audio
+  stop       Stop current recording
+  help       Show this help message
+
+Notes:
+  - Use '--release' in Sway keybindings to avoid multiple slurp overlays
+  - Notifications are handled with notify-send
+
+Example Sway config bindings:
+
+# Start recording (select area)
+bindsym --release \$mod+Shift+y exec \$HOME/.config/sway/scripts/swaycast
+
+# Start recording (select area, with audio)
+bindsym --release \$mod+Shift+a exec \$HOME/.config/sway/scripts/swaycast audio
+
+# Stop recording
+bindsym --release \$mod+Shift+x exec \$HOME/.config/sway/scripts/swaycast stop
+
+EOF
+            exit 0
+            ;;
+        audio|stop)
+            # valid options, continue
+            ;;
+        *)
+            echo "Error: Unknown option '$1'" >"$ORIG_STDERR"
+            exit 1
+            ;;
+    esac
+fi
+
+# --- Stop recording ---
 if [[ "$1" == "stop" ]]; then
   PID=$(cat "$PIDFILE" 2>/dev/null)
   if [ -n "$PID" ]; then
     kill "$PID"
     if [[ -f "$AUDIOFLAG" ]]; then
       notify-send -i media-playback-stop "Screencast (with audio) stopped" "finalizing file, please wait..."
+      rm -f "$AUDIOFLAG"
     else
       notify-send -i media-playback-stop "Screencast stopped" "finalizing file, please wait..."
     fi
@@ -54,7 +105,7 @@ if [[ "$1" == "stop" ]]; then
   exit 0
 fi
 
-# Try to get the XDG Videos directory using xdg-user-dirs
+# --- Prepare target filename ---
 VIDEOS_DIR=$(xdg-user-dir VIDEOS 2>/dev/null)
 if [ -z "$VIDEOS_DIR" ]; then
     VIDEOS_DIR="$HOME/Videos"
@@ -66,12 +117,19 @@ DATE=$(date '+%Y-%m-%d_%H-%M-%S')
 FILENAME="screencast_$DATE.mp4"
 TARGET="$SCREENCAST_DIR/$FILENAME"
 
-# Select recording area
-GEOM=$(slurp)
+# --- Select recording area ---
+SEL=$(slurp)
+if [[ -z "$SEL" ]]; then
+    notify-send -i dialog-error "No area selected" "Recording cancelled."
+    exit 1
+fi
 
-# Build command (add audio if requested)
+# Multi-display safe: strip output prefix if present
+GEOM=$(echo "$SEL" | sed 's/^[^:]*://')
+
+# --- Build command ---
 if [[ "$1" == "audio" ]]; then
-  wl-screenrec -g "$GEOM" --audio -f "$TARGET" &
+  wl-screenrec -g "$GEOM" -f "$TARGET" --audio &
   touch "$AUDIOFLAG"
 else
   wl-screenrec -g "$GEOM" -f "$TARGET" &
