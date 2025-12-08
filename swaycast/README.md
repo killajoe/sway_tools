@@ -21,14 +21,23 @@ If you use Sway’s config (usually `$HOME/.config/sway/config`), you can bind k
 Example:
 
 ``` 
-# Start recording (select area)
-bindsym $mod+Shift+y exec $HOME/.config/sway/scripts/swaycast
+# ---- Screencast keybindings ----------------------------------------------
+
+# Start recording (select area, no audio)
+bindsym --release $mod+Shift+y exec $HOME/.config/sway/scripts/swaycast
 
 # Start recording (select area, with audio)
-bindsym $mod+Shift+a exec $HOME/.config/sway/scripts/swaycast audio
+bindsym --release $mod+Shift+a exec $HOME/.config/sway/scripts/swaycast --audio
 
-# Stop recording
-bindsym $mod+Shift+x exec $HOME/.config/sway/scripts/swaycast stop
+# Stop active recording
+bindsym --release $mod+Shift+x exec $HOME/.config/sway/scripts/swaycast --stop
+
+# Fullscreen recording (optional)
+# bindsym --release $mod+Shift+f exec $HOME/.config/sway/scripts/swaycast --full
+
+# Fullscreen + audio (optional)
+# bindsym --release $mod+Shift+g exec $HOME/.config/sway/scripts/swaycast --full --audio
+
 ```
 
 Replace `~/path/to/swaycast` with the actual path to your script.
