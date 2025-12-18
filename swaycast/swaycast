@@ -23,19 +23,22 @@ ORIG_STDOUT=$(tty)
 ORIG_STDERR=$(tty)
 
 # === Check required dependencies ===
-REQUIRED_PKGS=(slurp wf-recorder xdg-user-dir inotifywait notify-send)
+REQUIRED_PKGS=(slurp wf-recorder xdg-user-dirs inotify-tools libnotify)
 
 missing=()
 for pkg in "${REQUIRED_PKGS[@]}"; do
-  if ! command -v "$pkg" &>/dev/null; then
+  if ! pacman -Qi "$pkg" &>/dev/null; then
     missing+=("$pkg")
   fi
 done
 
 if (( ${#missing[@]} > 0 )); then
+  # Desktop-Benachrichtigung
   notify-send -u critical -i dialog-error \
     "Missing dependencies for swaycast" \
     "Please install: ${missing[*]}"
+
+  # Ausgabe auf stderr
   echo "Error: Missing dependencies: ${missing[*]}" >&2
   exit 1
 fi
