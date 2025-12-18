@@ -5,7 +5,7 @@
 # Copyright (C) 2025 joekamprad
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-# needed packages: sudo pacman -Syu --needed slurp wl-recorder xdg-user-dirs inotify-tools
+# needed packages: sudo pacman -Syu --needed slurp wf-recorder xdg-user-dirs inotify-tools
 # this tool lets you select rectangle area of your screen [swaycast], and start recording that area.
 # to also include audio use [swaycast audio]
 # to stop press [swaycast stop] or use: swaycast stop
@@ -15,15 +15,15 @@ LOGFILE="/tmp/swaycast.log"
 mkdir -p "$(dirname "$LOGFILE")"
 exec >>"$LOGFILE" 2>&1
 
-PIDFILE="/tmp/wl-recorder.pid"
-AUDIOFLAG="/tmp/wl-recorder.audio"
+PIDFILE="/tmp/wf-recorder.pid"
+AUDIOFLAG="/tmp/wf-recorder.audio"
 
 # Save original stdout/stderr for help and error messages
 ORIG_STDOUT=$(tty)
 ORIG_STDERR=$(tty)
 
 # === Check required dependencies ===
-REQUIRED_PKGS=(slurp wl-recorder xdg-user-dir inotifywait notify-send)
+REQUIRED_PKGS=(slurp wf-recorder xdg-user-dir inotifywait notify-send)
 
 missing=()
 for pkg in "${REQUIRED_PKGS[@]}"; do
