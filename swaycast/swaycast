@@ -5,26 +5,25 @@
 # Copyright (C) 2025 joekamprad
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-# needed packages: sudo pacman -Syu --needed slurp wl-screenrec xdg-user-dirs inotify-tools
-# wl-screenrec currently only in AUR will be added to EndeavourOS repo in case of release
+# needed packages: sudo pacman -Syu --needed slurp wl-recorder xdg-user-dirs inotify-tools
 # this tool lets you select rectangle area of your screen [swaycast], and start recording that area.
 # to also include audio use [swaycast audio]
-# to stop [swaycast stop]
+# to stop press [swaycast stop] or use: swaycast stop
 # help: swaycast help
 
 LOGFILE="/tmp/swaycast.log"
 mkdir -p "$(dirname "$LOGFILE")"
 exec >>"$LOGFILE" 2>&1
 
-PIDFILE="/tmp/wl-screenrec.pid"
-AUDIOFLAG="/tmp/wl-screenrec.audio"
+PIDFILE="/tmp/wl-recorder.pid"
+AUDIOFLAG="/tmp/wl-recorder.audio"
 
 # Save original stdout/stderr for help and error messages
 ORIG_STDOUT=$(tty)
 ORIG_STDERR=$(tty)
 
 # === Check required dependencies ===
-REQUIRED_PKGS=(slurp wl-screenrec xdg-user-dir inotifywait notify-send)
+REQUIRED_PKGS=(slurp wl-recorder xdg-user-dir inotifywait notify-send)
 
 missing=()
 for pkg in "${REQUIRED_PKGS[@]}"; do
@@ -129,10 +128,10 @@ GEOM=$(echo "$SEL" | sed 's/^[^:]*://')
 
 # --- Build command ---
 if [[ "$1" == "audio" ]]; then
-  wl-screenrec -g "$GEOM" -f "$TARGET" --audio &
+  wf-recorder -g "$GEOM" -f "$TARGET" --audio &
   touch "$AUDIOFLAG"
 else
-  wl-screenrec -g "$GEOM" -f "$TARGET" &
+  wf-recorder -g "$GEOM" -f "$TARGET" &
   rm -f "$AUDIOFLAG"
 fi
 
