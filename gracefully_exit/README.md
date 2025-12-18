@@ -1,7 +1,7 @@
 # gracefully_exit
 
 Gracefully close all open windows in Sway
-with visible notifications, and running `swaymsg exit` `reboot` `poweroff` to quit the session.
+with visible notifications, before running `swaymsg exit` `reboot` `poweroff` to quit the session.
 
 # Usage: 
 ./exit-sway.sh {exit|reboot|poweroff}
