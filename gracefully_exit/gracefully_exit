@@ -1,75 +1,67 @@
 #!/usr/bin/env bash
-
-# gracefully_exit - Gracefully close all open windows in Sway
-# with visible notifications, and running `swaymsg exit` `reboot` `poweroff`
-# to quit the session.
-#
-# Copyright (C) 2025 Johannes Kamprad
-#
-# SPDX-License-Identifier: GPL-3.0-or-later
-#
-# to be used instead of simple run `swaymsg exit` in your powermenu or for keybind.
 # Gracefully close all open windows in Sway with visible notifications
-# Usage: ./gracefully_exit {exit|reboot|poweroff}
+# Usage: ./exit-sway.sh {exit|reboot|poweroff}
+
+#!/usr/bin/env bash
+
+# ... (Previous header comments remain the same)
 
 WAIT_TIME=5
 NOTIFY_DELAY=2
 ICON="system-log-out"
 
-# Argument check
 if [ -z "$1" ]; then
     echo "Usage: $0 {exit|reboot|poweroff}"
     exit 1
 fi
 ACTION="$1"
 
-# Get all open windows reliably (recursive search)
-windows=$(swaymsg -t get_tree | jq -r '
-  .. | objects 
-  | select(.type=="con" and (.app_id != null or .name != null)) 
-  | "\(.id):\(.app_id // .name)"'
-)
+# Function to get current windows
+get_windows() {
+    swaymsg -t get_tree | jq -r '
+      .. | objects
+      | select(.type=="con" and (.app_id != null or .name != null))
+      | "\(.id):\(.app_id // .name)"'
+}
+
+windows=$(get_windows)
 
 if [ -z "$windows" ]; then
-    notify-send -i "$ICON" "Sway Exit" "No open windows detected. Performing $ACTION..."
+    notify-send -i "$ICON" "Sway Exit" "No open windows. Performing $ACTION..."
     sleep $NOTIFY_DELAY
 else
-    # Build a list for the notification
     window_list=$(echo "$windows" | awk -F: '{print "- " $2}' | paste -sd '\n' -)
+    notify-send -i "$ICON" "Sway Exit" "Closing windows:\n$window_list"
+    sleep $NOTIFY_DELAY
 
-    # Notify user which windows will be closed
-    notify-send -i "$ICON" "Sway Exit" "Closing the following windows:\n$window_list"
-    sleep $NOTIFY_DELAY  # Give user time to see the notification
-
-    # Close all windows
+    # Try to close all windows
     for win in $windows; do
         win_id=$(echo "$win" | cut -d: -f1)
         swaymsg "[con_id=$win_id] kill"
     done
 
-    # Wait for windows to close
+    # Give apps time to close or prompt for save
     sleep $WAIT_TIME
 
-    # Final notification
+    # check if apps asking for action and do not exit in case
+    remaining_windows=$(get_windows)
+
+    if [ -n "$remaining_windows" ]; then
+        remaining_list=$(echo "$remaining_windows" | awk -F: '{print "- " $2}' | paste -sd '\n' -)
+        notify-send -u critical -i "dialog-warning" "Shutdown Aborted" "The following apps are still open (unsaved work?):\n$remaining_list"
+        echo "Aborting $ACTION: Windows still open."
+        exit 1
+    fi
+    # check end
+
     notify-send -i "$ICON" "Sway Exit" "All windows closed. Performing $ACTION..."
     sleep $NOTIFY_DELAY
 fi
 
 # Perform final action
 case "$ACTION" in
-    exit)
-        swaymsg exit
-        ;;
-    reboot)
-        systemctl reboot
-        ;;
-    poweroff)
-        systemctl poweroff
-        ;;
-    *)
-        echo "Invalid option: $ACTION"
-        echo "Usage: $0 {exit|reboot|poweroff}"
-        exit 1
-        ;;
+    exit)     swaymsg exit ;;
+    reboot)   systemctl reboot ;;
+    poweroff) systemctl poweroff ;;
+    *)        exit 1 ;;
 esac
-
