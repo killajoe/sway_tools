@@ -1,10 +1,7 @@
 # Sway Tools
 **A collection of simple Bash scripts to enhance **Sway** without adding unnecessary complexity.**
 
-## license
-> **note** This project is generally licensed under GPL v3. However, please note that specific subfolders or individual files may be governed by different licenses. In such cases, the specific license file located within that folder (or mentioned in the file headers) takes precedence for those specific components.
-
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/killajoe/sway_tools/blob/main/LICENSE)  ![Platform: Linux](https://img.shields.io/badge/Platform-Linux-green.svg)
+![Platform: Linux](https://img.shields.io/badge/Platform-Linux-green.svg)
 
 
 ## Features
@@ -42,5 +39,6 @@ Please submit a pull request or open an issue.
 
 
 ## License
+> **note** This project is generally licensed under GPL v3. However, please note that specific subfolders or individual files may be governed by different licenses. In such cases, the specific license file located within that folder (or mentioned in the file headers) takes precedence for those specific components.
 
-This project is licensed under the **GPL-3.0-or-later** license. See [LICENSE](LICENSE) for details.
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/killajoe/sway_tools/blob/main/LICENSE)  
