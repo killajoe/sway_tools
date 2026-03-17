@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
+
+# gracefully_exit - Gracefully close all open windows in Sway
+# with visible notifications, and running `swaymsg exit` `reboot` `poweroff`
+# to quit the session.
+#
+# Copyright (C) 2025 Johannes Kamprad
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# to be used instead of simple run `swaymsg exit` in your powermenu or for keybind.
 # Gracefully close all open windows in Sway with visible notifications
-# Usage: ./exit-sway.sh {exit|reboot|poweroff}
-
-#!/usr/bin/env bash
-
-# ... (Previous header comments remain the same)
+# Usage: ./gracefully_exit {exit|reboot|poweroff}
 
 WAIT_TIME=5
 NOTIFY_DELAY=2
