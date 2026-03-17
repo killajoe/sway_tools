@@ -1,6 +1,6 @@
 # Sway Tools
 
-![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg) ![Platform: Linux](https://img.shields.io/badge/Platform-Linux-green.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/killajoe/sway_tools/blob/main/LICENSE) ![Platform: Linux](https://img.shields.io/badge/Platform-Linux-green.svg)
 
 **A collection of simple Bash scripts to enhance **Sway** without adding unnecessary complexity.**
 
