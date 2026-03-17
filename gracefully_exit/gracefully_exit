@@ -54,7 +54,7 @@ else
 
     if [ -n "$remaining_windows" ]; then
         remaining_list=$(echo "$remaining_windows" | awk -F: '{print "- " $2}' | paste -sd '\n' -)
-        notify-send -u critical -i "dialog-warning" "Shutdown Aborted" "The following apps are still open (unsaved work?):\n$remaining_list"
+        notify-send -u critical -i "dialog-warning" "Shutdown Aborted" "Unsaved changes? Check these apps.:\n$remaining_list"
         echo "Aborting $ACTION: Windows still open."
         exit 1
     fi
