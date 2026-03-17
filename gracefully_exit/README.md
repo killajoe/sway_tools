@@ -1,7 +1,8 @@
 # gracefully_exit
 
-> Gracefully close all open windows in Sway
+Gracefully close all open windows in Sway
 with visible notifications, before running `swaymsg exit` `reboot` `poweroff` to quit the session.
+
 In case application has unsaved file it will give a warning and does not exit the session.
 
 # Usage: 
