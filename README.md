@@ -39,6 +39,6 @@ Please submit a pull request or open an issue.
 
 
 ## License
-> **note** This project is generally licensed under GPL v3. However, please note that specific subfolders or individual files may be governed by different licenses. In such cases, the specific license file located within that folder (or mentioned in the file headers) takes precedence for those specific components.
+**note** This project is generally licensed under GPL v3. However, please note that specific subfolders or individual files may be governed by different licenses. In such cases, the specific license file located within that folder (or mentioned in the file headers) takes precedence for those specific components.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/killajoe/sway_tools/blob/main/LICENSE)  
