@@ -14,7 +14,7 @@
 
 ## Tools Overview
              
-* keymap_selector - keyma/locale setup tool using dialog
+* keymap_selector - keymap/locale setup tool using dialog
 * new_workspace  - open a new empty workspace 
 * power_profiles_switcher  - check and set power profiles
 * swaycast  - screencast on sway
