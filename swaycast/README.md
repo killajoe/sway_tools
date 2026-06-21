@@ -1,7 +1,7 @@
 
 # joekamprad sway screencast helper (swaycast):
 
-needed packages: `sudo pacman -Syu --needed wl-recorder slurp xdg-user-dirs`
+needed packages: `sudo pacman -Syu --needed wf-recorder slurp xdg-user-dirs`
 
 
 this tool let you select rectangle area of your screen [$mod+shift+y],and start recording that area. 
