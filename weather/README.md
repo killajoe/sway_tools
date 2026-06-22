@@ -6,12 +6,12 @@
 
 # How it works
 
-* save script in your path w.g. $HOME/.config/sway/scripts, make it executable and use it in your waybar / bar config 
-You will need to seztup spi 
+* save script in your path w.g. $HOME/.config/sway/scripts, make it executable and use it in your waybar / bar config
+You will need to setup spi
 
 **waybar example part:**
 
-``` 
+```
 ...
   "modules-right": [
     "custom/separator",
@@ -21,7 +21,7 @@ You will need to seztup spi
 ...
 
 "custom/weather": {
-  "exec": "~/.config/sway/scripts/openweather",
+  "exec": "~/.config/sway/sway-openweather",
   "interval": 1800,
   "return-type": "text",
   "tooltip": false,
@@ -31,8 +31,7 @@ You will need to seztup spi
 
 To use their API create an account and get your key and city ID:
 
-run `~/.config/sway/scripts/openweather -s`  to create setup you will need:
+run `~/.config/sway/scripts/sway-openweather -s`  to create setup you will need:
 
     **Fee API key from:** https://openweathermap.org/api
     **city IDs from:** https://openweathermap.org/find
-
