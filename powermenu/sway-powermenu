@@ -9,8 +9,21 @@
 
 # needs rofi config:
 # $HOME/.config/rofi/powermenu.rasi
+# or systemwide: /usr/share/sway_tools/rofi/powermenu.rasi
 
-ROFI_THEME="${HOME}/.config/rofi/powermenu.rasi"
+# default layout
+DEFAULT_THEME="/usr/share/sway_tools/rofi/powermenu.rasi"
+
+# Custom path (in case the user wants to overwrite the layout)
+USER_THEME="${XDG_CONFIG_HOME:-$HOME/.config}/rofi/powermenu.rasi"
+
+# Check if custom layout exists in the user path and use it in case
+if [ -f "$USER_THEME" ]; then
+    ROFI_THEME="$USER_THEME"
+else
+    ROFI_THEME="$DEFAULT_THEME"
+fi
+
 # Define possible lock scripts/commands (edit this list as you like)
 LOCK_SCRIPTS=("swaylock" "swaylock-effects" "i3lock" "$HOME/.config/sway/scripts/gtklock")
 
