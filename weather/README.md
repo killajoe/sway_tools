@@ -6,8 +6,8 @@
 
 # How it works
 
-* save script in your path w.g. `~/.local/bin/`, make it executable and use it in your waybar / bar config
-You will need to setup spi
+* save script in your path w.g. `~/.local/bin/`, make it executable and use it in your waybar config
+You will need to setup add:
 
 **waybar example part:**
 
