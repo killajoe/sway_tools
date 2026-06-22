@@ -23,6 +23,7 @@ if [ -f "$USER_THEME" ]; then
 else
     ROFI_THEME="$DEFAULT_THEME"
 fi
+
 # Define possible lock scripts/commands (edit this list as you like)
 LOCK_SCRIPTS=("swaylock" "swaylock-effects" "i3lock" "$HOME/.config/sway/scripts/gtklock")
 
