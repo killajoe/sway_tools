@@ -1,4 +1,4 @@
-# power-profiles - a very simple rofi power-profiles switcher
+# sway-power-profiles - a very simple rofi power-profiles switcher
 
 needs rofi config under: 
 
