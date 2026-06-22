@@ -1,4 +1,4 @@
-# openweather - script to show weather on waybar or others
+# sway-openweather - script to show weather on waybar or others
 
 
 ![openweather waybar](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/weather/openweather-waybar.png)
@@ -21,7 +21,7 @@ You will need to setup spi
 ...
 
 "custom/weather": {
-  "exec": "~/.config/sway/sway-openweather",
+  "exec": "sway-openweather",
   "interval": 1800,
   "return-type": "text",
   "tooltip": false,
@@ -31,7 +31,7 @@ You will need to setup spi
 
 To use their API create an account and get your key and city ID:
 
-run `~/.config/sway/scripts/sway-openweather -s`  to create setup you will need:
+run `sway-openweather -s`  to create setup you will need:
 
     **Fee API key from:** https://openweathermap.org/api
     **city IDs from:** https://openweathermap.org/find
