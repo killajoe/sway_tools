@@ -1,7 +1,9 @@
 # power-profiles - a very simple rofi power-profiles switcher
 
 needs rofi config under: 
-$HOME/.config/rofi/power-profiles.rasi
+
+`~/.config/rofi/powermenu.rasi`
+or systemwide: `/usr/share/sway_tools/rofi/power-profiles.rasi`
 
 **usage:**
 
