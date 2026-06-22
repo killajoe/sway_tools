@@ -1,6 +1,6 @@
-## powermenu - a very simple rofi powermenu
+# powermenu - a very simple rofi powermenu
 
-# needs rofi config:
+## needs rofi config:
 `~/.config/rofi/powermenu.rasi`
 or systemwide: `/usr/share/sway_tools/rofi/powermenu.rasi`
 
