@@ -33,5 +33,5 @@ To use their API create an account and get your key and city ID:
 
 run `sway-openweather -s`  to create setup you will need:
 
-    **Fee API key from:** https://openweathermap.org/api
-    **city IDs from:** https://openweathermap.org/find
+* Fee API key from: https://openweathermap.org/api
+* city IDs from: https://openweathermap.org/find
