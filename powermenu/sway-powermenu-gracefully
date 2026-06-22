@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# powermenu_gracefully - a very simple rofi powermenu
+# sway-powermenu-gracefully - a very simple rofi powermenu
 # powermenu but closing every app before doing logout or reboot
 # Copyright (C) 2025 Johannes Kamprad
 #
@@ -9,8 +9,20 @@
 
 # needs rofi config:
 # $HOME/.config/rofi/powermenu.rasi
+# or systemwide: /usr/share/sway_tools/rofi/powermenu.rasi
 
-ROFI_THEME="${HOME}/.config/rofi/powermenu.rasi"
+# default layout
+DEFAULT_THEME="/usr/share/sway_tools/rofi/powermenu.rasi"
+
+# Custom path (in case the user wants to overwrite the layout)
+USER_THEME="${XDG_CONFIG_HOME:-$HOME/.config}/rofi/powermenu.rasi"
+
+# Check if custom layout exists in the user path and use it in case
+if [ -f "$USER_THEME" ]; then
+    ROFI_THEME="$USER_THEME"
+else
+    ROFI_THEME="$DEFAULT_THEME"
+fi
 # Define possible lock scripts/commands (edit this list as you like)
 LOCK_SCRIPTS=("swaylock" "swaylock-effects" "i3lock" "$HOME/.config/sway/scripts/gtklock")
 
@@ -63,13 +75,13 @@ case $chosen in
         exit 0
         ;;
     "$logout")
-        $HOME/.config/sway/scripts/gracefully_exit exit
+        sway-gracefully-exit exit
         ;;
     "$reboot")
-        $HOME/.config/sway/scripts/gracefully_exit reboot
+        sway-gracefully-exit reboot
         ;;
     "$shutdown")
-        $HOME/.config/sway/scripts/gracefully_exit poweroff
+        sway-gracefully-exit poweroff
         ;;
     "$suspend")
         systemctl suspend
