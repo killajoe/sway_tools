@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# waybar_toggle - toggle disable/enable waybars
+# waybar-toggle - toggle disable/enable waybars
 #
 # Copyright (C) 2025 Johannes Kamprad
 #
