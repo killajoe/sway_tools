@@ -52,9 +52,9 @@ find_lock_script() {
 chancel=" Cancel"
 lock="  Lock"
 logout="  Logout"
-reboot="  Reboot"
+reboot=" Reboot"
 shutdown="  Shutdown"
-suspend="  Suspend"
+suspend="   Suspend"
 hibernate="  Hibernate"
 
 
