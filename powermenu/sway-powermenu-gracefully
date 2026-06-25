@@ -49,13 +49,13 @@ find_lock_script() {
 }
 
 # Menu entries
-chancel="  Cancel"
+chancel="   Cancel"
 lock="   Lock"
 logout="󰗽   Logout"
-reboot="󱎝    Reboot"
+reboot="󱎝   Reboot"
 shutdown="󰐥   Shutdown"
-suspend=" Suspend"
-hibernate="  Hibernate"
+suspend="   Suspend"
+hibernate="   Hibernate"
 
 
 # Add lock only if script is found
