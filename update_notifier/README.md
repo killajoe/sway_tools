@@ -2,7 +2,7 @@
 
 sitting in the tray as an purple icon when no updates and getting red if you have updates.
 
-it has two parts one is the tray app second the updater scripüt, both ready to be hacked by your needs
+it has two parts one is the tray app, second the updater script, both ready to be hacked by your needs
 
 **update notifier script for system updates:**
 
