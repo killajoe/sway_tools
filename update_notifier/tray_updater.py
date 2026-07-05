@@ -9,8 +9,8 @@ from pystray import Icon, Menu, MenuItem
 # Configuration
 CHECK_INTERVAL = 1800  # 30 minutes
 TERMINAL_EMULATOR = "kitty"  # Adjust to your preferred terminal
-SCRIPT_PATH = os.path.expanduser("~/.config/sway/scripts/run_update.sh")  # Updated path
-RGB_THRESHOLD = 4  # Trigger red profile if repo updates strictly exceed 4 (> 4) (Number of packages)
+SCRIPT_PATH = os.path.expanduser("run_update.sh")  # set path to your updater script or command
+RED_THRESHOLD = 4  # Trigger red icon if total updates strictly exceed 4 (> 4)
 
 def create_circle_image(color, size=64):
     """Generates a simple color circle image."""
@@ -51,14 +51,6 @@ class UpdateCheckerTray:
 
         return repo_count, aur_count
 
-    def _set_rgb_profile(self, repo_count):
-        """Controls OpenRGB profiles based on the repository update count only."""
-        profile = "Updates_RED" if repo_count > RGB_THRESHOLD else "Updates_GREEN"
-        try:
-            subprocess.Popen(["openrgb", "--profile", profile], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except FileNotFoundError:
-            pass
-
     def _perform_check(self):
         """Internal helper to execute the check and update the UI state."""
         with self.lock:
@@ -67,15 +59,17 @@ class UpdateCheckerTray:
 
             if total_updates > 0:
                 self.update_available = True
-                self.icon.icon = self.icon_updates_available
                 self.icon.title = f"Updates: {total_updates} (Repo: {repo_count} | AUR: {aur_count})"
+                
+                # Dynamic icon color assignment based on threshold
+                if total_updates > RED_THRESHOLD:
+                    self.icon.icon = self.icon_updates_available
+                else:
+                    self.icon.icon = self.icon_no_updates
             else:
                 self.update_available = False
                 self.icon.icon = self.icon_no_updates
                 self.icon.title = "System up to date"
-
-            # Execute RGB profile switch based strictly on repository updates
-            self._set_rgb_profile(repo_count)
 
     def check_loop(self):
         """Background loop to periodically verify update status."""
