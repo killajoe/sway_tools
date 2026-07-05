@@ -15,3 +15,10 @@ it has two parts one is the tray app, second the updater script, both ready to b
 <img alt="updater_menu" src="https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/update_notifier/updater-menu.png" />
 <img alt="updater_terminal" src="https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/update_notifier/updater-terminal.png" />
 
+**How to use:**
+add:
+```
+# update tray
+exec python3 tray_updater.py
+```
+Needs the scripts in ~/.local/bin/ (example) and set executable...
