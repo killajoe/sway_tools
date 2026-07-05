@@ -10,7 +10,7 @@ from pystray import Icon, Menu, MenuItem
 CHECK_INTERVAL = 1800  # 30 minutes
 TERMINAL_EMULATOR = "kitty"  # Adjust to your preferred terminal
 SCRIPT_PATH = os.path.expanduser("~/.config/sway/scripts/run_update.sh")  # Updated path
-RGB_THRESHOLD = 4  # Trigger red profile if repo updates strictly exceed 4 (> 4)
+RGB_THRESHOLD = 4  # Trigger red profile if repo updates strictly exceed 4 (> 4) (Number of packages)
 
 def create_circle_image(color, size=64):
     """Generates a simple color circle image."""
