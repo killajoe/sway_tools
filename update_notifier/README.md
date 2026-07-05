@@ -33,6 +33,6 @@ Options in the tray app:
 ```
 CHECK_INTERVAL = 1800  # 30 minutes
 TERMINAL_EMULATOR = "kitty"  # Adjust to your preferred terminal
-SCRIPT_PATH = os.path.expanduser("run_update.sh") # set your updater tool or script
-RGB_THRESHOLD = 4  # Trigger red profile if repo updates strictly exceed 4 (> 4) (Number of packages)
+SCRIPT_PATH = os.path.expanduser("run_update.sh")  # set path to your updater script or command
+RED_THRESHOLD = 4  # Trigger red icon if total updates strictly exceed 4 (> 4)
 ```
