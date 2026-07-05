@@ -1,4 +1,4 @@
-## A very simpüly update notfier and update runner 
+## A very simply update notfier and update runner 
 
 sitting in the tray as an purple icon when no updates and getting red if you have updates.
 
