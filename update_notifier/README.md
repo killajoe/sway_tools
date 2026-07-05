@@ -29,8 +29,10 @@ Needs the scripts in ~/.local/bin/ (example) and set executable...
 Options in the tray apop:
 
 
-# Configuration
+**Configuration**
+```
 CHECK_INTERVAL = 1800  # 30 minutes
 TERMINAL_EMULATOR = "kitty"  # Adjust to your preferred terminal
 SCRIPT_PATH = os.path.expanduser("run_update.sh")
 RGB_THRESHOLD = 4  # Trigger red profile if repo updates strictly exceed 4 (> 4) (Number of packages)
+```
