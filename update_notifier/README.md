@@ -26,7 +26,7 @@ exec python3 tray_updater.py
 ```
 Needs the scripts in ~/.local/bin/ (example) and set executable...
 
-Options in the tray apop:
+Options in the tray app:
 
 
 **Configuration**
