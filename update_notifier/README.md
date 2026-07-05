@@ -16,7 +16,8 @@ it has two parts one is the tray app, second the updater script, both ready to b
 <img alt="updater_terminal" src="https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/update_notifier/updater-terminal.png" />
 
 **How to use:**
-add:
+
+add it to be started with your session
 ```
 # update tray
 exec python3 tray_updater.py
