@@ -50,12 +50,12 @@ find_lock_script() {
 
 # Menu entries
 chancel=" Cancel"
-lock="  Lock"
-logout="  Logout"
+lock=" Lock"
+logout=" Logout"
 reboot=" Reboot"
-shutdown="  Shutdown"
-suspend="   Suspend"
-hibernate="  Hibernate"
+shutdown=" Shutdown"
+suspend=" Suspend"
+hibernate=" Hibernate"
 
 
 # Add lock only if script is found
