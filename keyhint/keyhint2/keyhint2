@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# This script lists Sway keybindings from the Sway config file and allows the user to select one via rofi dmenu.
+# When a keybinding is selected, it executes the associated command.
+
+CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/sway/config"
+
+# Path definitions: check user config first, fall back to system-wide theme
+USER_THEME="${XDG_CONFIG_HOME:-$HOME/.config}/rofi/rofikeyhint2.rasi"
+SYSTEM_THEME="/usr/share/sway_tools/rofi/rofikeyhint2.rasi"
+
+if [[ -f "$USER_THEME" ]]; then
+    THEME_FILE="$USER_THEME"
+elif [[ -f "$SYSTEM_THEME" ]]; then
+    THEME_FILE="$SYSTEM_THEME"
+fi
+
+# Check if config file exists
+if [[ ! -f "$CONFIG_FILE" ]]; then
+    notify-send "Sway Keybindings" "Config file not found: $CONFIG_FILE" -u critical
+    exit 1
+fi
+
+# Parse keybindings from config file
+keybindings=$(grep -E '^\s*bindsym' "$CONFIG_FILE" | \
+    grep -v '^[[:space:]]*#' | \
+    sed 's/^\s*bindsym\s*//' | \
+    awk '{
+        sub(/\s+#.*$/, "")
+
+        i = 1
+        while (i <= NF && $i ~ /^--/) { i++ }
+        if (i > NF) next
+
+        keys = $i; i++
+
+        cmd = ""
+        for (j = i; j <= NF; j++) {
+            if (j > i) cmd = cmd " "
+            cmd = cmd $j
+        }
+
+        gsub(/\$mod/, "Mod", keys)
+        gsub(/Shift/, "⇧", keys)
+        gsub(/Control/, "Ctrl", keys)
+        gsub(/\+/, " + ", keys)
+
+        printf "%-35s → %s\n", keys, cmd
+    }')
+
+# Show in rofi using theme if found, otherwise use fallback inline styling
+if [[ -n "$THEME_FILE" ]]; then
+    selected=$(echo "$keybindings" | rofi -i -dmenu -p "Sway Shortcuts" -theme "$THEME_FILE")
+else
+    selected=$(echo "$keybindings" | rofi -i -dmenu -p "Sway Shortcuts" -theme-str 'window {width: 50%;}')
+fi
+
+# If something was selected, extract and execute the command
+if [[ -n "$selected" ]]; then
+    command=$(echo "$selected" | sed 's/^[^→]*→\s*//')
+
+    if [[ -n "$command" ]]; then
+        swaymsg "$command"
+    fi
+fi
