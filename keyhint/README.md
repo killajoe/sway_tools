@@ -6,7 +6,7 @@ A set of keybinding helper utilities for Sway on EndeavourOS. This directory con
 
 A lightweight GTK/YAD overview window that displays essential default EndeavourOS Sway keybindings in a compact list.
 
-![KeyHint YAD Overview](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/keyhint/keyhint-yad.avif)
+![KeyHint YAD Overview](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/keyhint/images/keyhint-yad.avif)
 
 ### Features
 
@@ -25,7 +25,7 @@ keyhint
 
 A dynamic Bash script that parses keybindings directly from your Sway configuration file in real time and presents them in a searchable Rofi menu. Selecting an entry executes the associated command immediately via `swaymsg`.
 
-![KeyHint Interactive Rofi Searcher](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/keyhint/keyhint2.avif)
+![KeyHint Interactive Rofi Searcher](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/keyhint/images/keyhint2.avif)
 
 ### Features
 
