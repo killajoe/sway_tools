@@ -13,11 +13,12 @@
 ## Tools Overview
 
 - **app_menu** - clean, responsive application launcher menu using Rofi
-- **keyhint** - static YAD cheat sheet and dynamic Rofi keybinding searcher (`keyhint-2`)
+- **keyhint** - static YAD cheat sheet and dynamic Rofi keybinding searcher
 - **keymap_selector** - keymap/locale setup tool using dialog
 - **new_workspace** - open a new empty workspace
 - **power_profiles_switcher** - check and set power profiles
 - **powermenu** - customizable system power menu using Rofi
+- **Rofi Themes** - Some rofi themes, currently eos-sway dfeault deep-purple
 - **swaycast** - screencast recording utility for Sway
 - **swayshot** - screenshot management tool
 - **waybar_toggle** - toggle Waybar on and off with a shortcut (or reload it)
