@@ -53,12 +53,13 @@ configuration {
 }
 
 @theme "deep-purple"
+```
 
-### If you use **Rofi-theme-selector**:
+### If you use **rofi-theme-selector**:
 
 Adjust the import line at the top depending on your setup to dynamically keep the import pointing to config.rasi, 
 
-which is automatically managed when you save a theme via rofi-theme-selector.
+which is automatically managed when you save a theme via *rofi-theme-selector*.
 
 ```
 @import "~/.config/rofi/config.rasi"
