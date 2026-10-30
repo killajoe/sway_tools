@@ -2,7 +2,7 @@
 
 A collection of themes for Rofi
 
-## Available Themes
+### Available Themes
 
 ### 1. Deep Purple (`deep-purple.rasi`)
 
@@ -32,7 +32,7 @@ mkdir -p ~/.local/share/rofi/themes
 cp rofi_themes/*.rasi ~/.local/share/rofi/themes/
 ```
 
-## Usage
+### Usage
 
 ### Test a Theme Directly
 
