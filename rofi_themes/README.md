@@ -66,9 +66,9 @@ which is automatically managed when you save a theme via *rofi-theme-selector*.
 ```
 
 
-# Just in case you want to contribute your modified theme here:
+### Just in case you want to contribute your modified theme here:
 
-### Adding New Themes
+**Adding New Themes**
 
 To contribute or add new themes to this repo:
 
