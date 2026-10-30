@@ -19,6 +19,7 @@ A sleek, dark purple theme featuring rounded corners (`border-radius: 15px`), so
 * **Universal Support**: Works seamlessly as a base theme for standard launcher modes (`drun`, `run`, `window`).
 
 [more will follow or not?]
+
 ---
 
 ## Installation
@@ -65,7 +66,7 @@ configuration {
 
 ---
 
-# Just in case you want to contribute your modified theme here:
+## Just in case you want to contribute your modified theme here:
 
 ## Adding New Themes
 
