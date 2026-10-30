@@ -22,9 +22,7 @@ A sleek, dark purple theme featuring rounded corners (`border-radius: 15px`), so
 
 ---
 
-## Installation
-
-### User Installation (Recommended)
+### Installation
 
 Copy the desired `.rasi` theme files into your local XDG data folder for Rofi themes:
 
