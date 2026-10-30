@@ -1,39 +1,75 @@
-# Deep Purple Rofi Theme
+# Rofi Themes
 
-A sleek, dark purple theme for Rofi designed for EndeavourOS Sway setups, featuring rounded corners and soft contrast accents.
+A collection of sleek, dark themes designed for Rofi on EndeavourOS Sway setups, featuring rounded corners, balanced contrast, and custom accents.
 
-## Features
+## Available Themes
+
+### 1. Deep Purple (`deep-purple.rasi`)
+
+![Deep Purple Theme](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/rofi_themes/images/deep-purple.avif)
+
+A sleek, dark purple theme featuring rounded corners (`border-radius: 15px`), soft contrast accents, and a clean, modern aesthetic.
+
+#### Features
 
 * **Rounded Corners**: Modern window styling with `border-radius: 15px`.
+
 * **Soft Palette**: Dark purple background combined with clean highlight tones.
+
 * **Universal Support**: Works seamlessly as a base theme for standard launcher modes (`drun`, `run`, `window`).
+
+---
 
 ## Installation
 
-### User Installation
+### User Installation (Recommended)
 
-Copy `deep-purple.rasi` into your local XDG data folder for Rofi themes:
+Copy the desired `.rasi` theme files into your local XDG data folder for Rofi themes:
 
-```bash
+```
 mkdir -p ~/.local/share/rofi/themes
-cp deep-purple.rasi ~/.local/share/rofi/themes/
+cp rofi_themes/*.rasi ~/.local/share/rofi/themes/
+
 ```
 
+### System-wide Installation
+
+For system-wide availability (e.g. via PKGBUILD), place the theme files into `/usr/share/rofi/themes/` or `/usr/share/sway_tools/rofi/`.
+
+---
 
 ## Usage
 
-Test or apply the theme directly by name (Rofi automatically detects themes in `~/.local/share/rofi/themes/`):
+### Test a Theme Directly
 
-```bash
+Test or apply any theme directly by name (Rofi automatically detects themes stored in `~/.local/share/rofi/themes/`):
+
+```
 rofi -show drun -theme deep-purple
+
 ```
 
-Or set it as your default theme inside `~/.config/rofi/config.rasi`:
+### Set as Default Theme
 
-```rasi
+Set your preferred default theme inside `~/.config/rofi/config.rasi`:
+
+```
 configuration {
     /* ... your configuration options ... */
 }
 
 @theme "deep-purple"
+
 ```
+
+---
+
+## Adding New Themes
+
+To contribute or add new themes to this directory:
+
+1. Place your `.rasi` file in `rofi_themes/`.
+
+2. Add a screenshot or preview image in `rofi_themes/images/`.
+
+3. Add a new subsection under **Available Themes** in this `README.md` following the same format.
