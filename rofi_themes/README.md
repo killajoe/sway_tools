@@ -65,6 +65,8 @@ configuration {
 
 ---
 
+# Just in case you want to contribute your modified theme here:
+
 ## Adding New Themes
 
 To contribute or add new themes to this directory:
