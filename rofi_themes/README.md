@@ -32,12 +32,6 @@ Copy the desired `.rasi` theme files into your local XDG data folder for Rofi th
 mkdir -p ~/.local/share/rofi/themes
 cp rofi_themes/*.rasi ~/.local/share/rofi/themes/
 
-```
-
-### System-wide Installation
-
-For system-wide availability (e.g. via PKGBUILD), place the theme files into `/usr/share/rofi/themes/` or `/usr/share/sway_tools/rofi/`.
-
 ---
 
 ## Usage
@@ -62,6 +56,14 @@ configuration {
 
 @theme "deep-purple"
 
+### If you use **Rofi-theme-selector**:
+
+Adjust the import line at the top depending on your setup to dynamically keep the import pointing to config.rasi, 
+
+which is automatically managed when you save a theme via rofi-theme-selector.
+
+```
+@import "~/.config/rofi/config.rasi"
 ```
 
 ---
