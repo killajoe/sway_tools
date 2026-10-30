@@ -33,7 +33,7 @@ A dynamic Bash script that parses keybindings directly from your Sway configurat
 
 * **Live Configuration Parsing**: Automatically extracts `bindsym` entries from `~/.config/sway/config`.
 * **Modifier Formatting**: Cleanly formats `$mod`, `Shift`, and `Control` into readable key combinations (`Mod`, `⇧`, `Ctrl`).
-* **Theme Fallback Hierarchy**: Loads user-defined themes first (`~/.config/rofi/rofikeyhint.rasi`), with automatic fallback to system defaults (`/usr/share/sway_tools/rofi/rofikeyhint.rasi`) and inline default styles.
+* **Theme Fallback Hierarchy**: Loads user-defined themes first (`~/.config/rofi/rofikeyhint2.rasi`), with automatic fallback to system defaults (`/usr/share/sway_tools/rofi/rofikeyhint2.rasi`) and inline default styles.
 
 ### Usage
 
