@@ -10,7 +10,7 @@ A lightweight GTK/YAD overview window that displays essential default EndeavourO
 
 ### Features
 
-* **Compact Layout**: Displays common shortcuts with icon indicators and customized window borders (`--borders=15`).
+* **Compact Layout**: Displays common shortcuts with icon indicators.
 * **Quick Reference**: Ideal for binding to panel applets or quick keyboard shortcuts.
 
 ### Usage
