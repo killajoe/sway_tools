@@ -4,11 +4,11 @@
 needed packages: `sudo pacman -Syu --needed wf-recorder slurp xdg-user-dirs`
 
 
-this tool let you select rectangle area of your screen [$mod+shift+y],and start recording that area. 
+this tool let you select rectangle area of your screen [$mod+shift+y],and start recording that area.
 
 to stop press [$mod+shift+x] it will save automatically to video $HOME dir.
 
-![Demo](swaycast-demo.webp)
+![Demo](images/swaycast-demo.webp)
 
 # How it works
 
@@ -17,7 +17,7 @@ Setting up keybinds in Sway
 If you use Sway’s config (usually `$HOME/.config/sway/config`), you can bind keys to run the script with or without the stop argument.
 Example:
 
-``` 
+```
 # Screencast keybindings
 
 # Start recording (select area, no audio)

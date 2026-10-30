@@ -12,6 +12,6 @@ In case application has unsaved file it will give a warning and does not exit th
 to be used instead of simple run `swaymsg exit` `reboot` `poweroff` in your [powermenu](https://github.com/killajoe/sway_tools/tree/main/powermenu) or for keybind.
 
 
-![gracefull_exit notifications](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/gracefully_exit/img/graceful_exit.png)
+![gracefull_exit notifications](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/gracefully_exit/imgages/graceful_exit.png)
 
-![gracefull_stop notifications](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/gracefully_exit/img/gracefully_stop.png)
+![gracefull_stop notifications](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/gracefully_exit/imgages/gracefully_stop.png)

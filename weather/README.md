@@ -1,7 +1,7 @@
 # sway-openweather - script to show weather on waybar or others
 
 
-![openweather waybar](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/weather/openweather-waybar.png)
+![openweather waybar](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/weather/images/openweather-waybar.png)
 
 
 # How it works
