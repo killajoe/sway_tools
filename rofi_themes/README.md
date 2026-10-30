@@ -65,7 +65,6 @@ which is automatically managed when you save a theme via *rofi-theme-selector*.
 @import "~/.config/rofi/config.rasi"
 ```
 
----
 
 # Just in case you want to contribute your modified theme here:
 
