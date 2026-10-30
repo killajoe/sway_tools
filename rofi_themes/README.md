@@ -34,8 +34,6 @@ cp rofi_themes/*.rasi ~/.local/share/rofi/themes/
 
 ### Usage
 
-### Test a Theme Directly
-
 Test or apply any theme directly by name (Rofi automatically detects themes stored in `~/.local/share/rofi/themes/`):
 
 ```
