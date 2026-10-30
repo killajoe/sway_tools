@@ -71,7 +71,7 @@ which is automatically managed when you save a theme via *rofi-theme-selector*.
 
 ### Adding New Themes
 
-To contribute or add new themes to this directory:
+To contribute or add new themes to this repo:
 
 1. Place your `.rasi` file in `rofi_themes/`.
 
