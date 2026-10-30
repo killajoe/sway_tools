@@ -1,6 +1,8 @@
 # Sway Tools - KeyHint
 
-A set of keybinding helper utilities for Sway on EndeavourOS. This directory contains two distinct tools: a static GUI cheat sheet powered by YAD and a dynamic interactive keybinding launcher powered by Rofi.
+A set of two keybinding helper utilities for Sway on EndeavourOS. This directory contains the two tools: 
+
+a static GUI cheat sheet powered by YAD and a dynamic interactive keybinding launcher powered by Rofi.
 
 ## 1. Quick Overview Sheet (`keyhint`)
 
