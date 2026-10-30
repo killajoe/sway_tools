@@ -1,4 +1,4 @@
-# Sway Tools - App Menu (Rofi)
+# App Menu (Rofi)
 
 A customized, balanced 4-column application menu configuration for **Rofi**, designed for Sway.
 
@@ -10,14 +10,14 @@ A customized, balanced 4-column application menu configuration for **Rofi**, des
 - **Optimized Layout**: Uses a 4-column grid layout with 55% relative window width, ensuring long application names fit without truncation.
 - **Flexible Theming**: Supports dynamic theme switching via `rofi-theme-selector`, or allows binding to a specific fixed theme file.
 - **Clean Spacing**: Subtle row spacing and padding for improved readability and navigation.
-- **Icon Support**: Fully compatible with icon themes (default: `Qogir-Dark`) using `Ubuntu Nerd Font`.
+- **Icon Support**: Fully compatible with icon themes (default: `Qogir-Dark`) using `Noto Sans Regular`.
 
 ## Prerequisites
 
 Make sure you have the following packages installed:
-- `rofi-wayland`
+- `rofi`
 - `qogir-icon-theme` (or any preferred icon theme)
-- `ttf-ubuntu-nerd`
+- `noto-fonts`
 
 ## Installation
 
