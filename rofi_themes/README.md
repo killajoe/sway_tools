@@ -1,6 +1,6 @@
 # Rofi Themes
 
-A collection of sleek, dark themes designed for Rofi on EndeavourOS Sway setups, featuring rounded corners, balanced contrast, and custom accents.
+A collection of themes for Rofi
 
 ## Available Themes
 
@@ -18,6 +18,7 @@ A sleek, dark purple theme featuring rounded corners (`border-radius: 15px`), so
 
 * **Universal Support**: Works seamlessly as a base theme for standard launcher modes (`drun`, `run`, `window`).
 
+[more will follow or not?]
 ---
 
 ## Installation
