@@ -2,7 +2,7 @@
 
 A customized, balanced 4-column application menu configuration for **Rofi**, designed for Sway.
 
-![App Menu](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/app_menu/app_menu.avif)
+![App Menu](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/app_menu/images/app_menu.avif)
 
 
 ## Features
@@ -32,7 +32,7 @@ Make sure you have the following packages installed:
      @import "~/.local/share/rofi/themes/deep-purple.rasi"
      ```
 
-![Rofi Theme Selector](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/app_menu/rofi-theme-selector.avif)
+![Rofi Theme Selector](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/app_menu/images/rofi-theme-selector.avif)
 
 ## Usage
 
