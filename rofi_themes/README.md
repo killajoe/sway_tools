@@ -26,11 +26,11 @@ A sleek, dark purple theme featuring rounded corners (`border-radius: 15px`), so
 
 Copy the desired `.rasi` theme files into your local XDG data folder for Rofi themes:
 
+
 ```
 mkdir -p ~/.local/share/rofi/themes
 cp rofi_themes/*.rasi ~/.local/share/rofi/themes/
-
----
+```
 
 ## Usage
 
@@ -47,6 +47,7 @@ rofi -show drun -theme deep-purple
 
 Set your preferred default theme inside `~/.config/rofi/config.rasi`:
 
+
 ```
 configuration {
     /* ... your configuration options ... */
@@ -54,6 +55,7 @@ configuration {
 
 @theme "deep-purple"
 ```
+
 
 ### If you use **rofi-theme-selector**:
 
