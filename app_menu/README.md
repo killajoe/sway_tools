@@ -2,6 +2,9 @@
 
 A customized, balanced 4-column application menu configuration for **Rofi**, designed for Sway.
 
+![App Menu](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/app_menu/app_menu.avif)
+
+
 ## Features
 
 - **Optimized Layout**: Uses a 4-column grid layout with 55% relative window width, ensuring long application names fit without truncation.
@@ -28,6 +31,8 @@ Make sure you have the following packages installed:
      ```rasi
      @import "~/.local/share/rofi/themes/deep-purple.rasi"
      ```
+
+![Rofi Theme Selector](https://raw.githubusercontent.com/killajoe/sway_tools/refs/heads/main/app_menu/rofi-theme-selector.avif)
 
 ## Usage
 
