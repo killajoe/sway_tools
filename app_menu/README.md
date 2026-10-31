@@ -39,11 +39,10 @@ Make sure you have the following packages installed:
 Launch the application menu via your Sway keybinding:
 
 ```bash
-# rofi-wayland application menu
-# set config to user path in case a modified version is present
-set $rofi_config /usr/share/sway_tools/rofi/rofidmenu.rasi
-[ -f ~/.config/rofi/rofidmenu.rasi ] && set $rofi_config ~/.config/rofi/rofidmenu.rasi
+# ~/.config/sway/config.d/app_menu
 
-bindsym $mod+d exec rofi -show drun -config $rofi_config
+set $rofi_drun_user  "$HOME/.config/rofi/rofidmenu.rasi"
+set $rofi_drun_sys   "/usr/share/sway_tools/rofi/rofidmenu.rasi"
 
-bindsym $mod+Shift+D exec rofi -show window -config $rofi_config
+bindsym $mod+d exec rofi -show drun -config "$( [ -f $rofi_drun_user ] && echo $rofi_drun_user || echo $rofi_drun_sys )"
+bindsym $mod+Shift+D exec rofi -show window -config "$( [ -f $rofi_drun_user ] && echo $rofi_drun_user || echo $rofi_drun_sys )"
