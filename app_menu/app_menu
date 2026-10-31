@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
-USER_THEME="$HOME/.config/rofi/rofidmenu.rasi"
-DEFAULT_THEME="/usr/share/sway_tools/rofi/rofidmenu.rasi"
+
+# Funktion für die Hilfeausgabe
+print_help() {
+    echo "Usage: rofi-launcher [MODE] [THEME_NAME]"
+    echo ""
+    echo "Arguments:"
+    echo "  MODE        Rofi mode to launch (default: drun)"
+    echo "              Examples: drun, window, run, filebrowser"
+    echo "  THEME_NAME  Name of the rasi theme file without extension (default: rofidmenu)"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help  Display this help message and exit"
+}
+
+# Hilfe-Flag abfangen
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    print_help
+    exit 0
+fi
+
+MODE="${1:-drun}"
+THEME_NAME="${2:-rofidmenu}"
+
+USER_THEME="$HOME/.config/rofi/${THEME_NAME}.rasi"
+DEFAULT_THEME="/usr/share/sway_tools/rofi/${THEME_NAME}.rasi"
 
 if [ -f "$USER_THEME" ]; then
     ROFI_THEME="$USER_THEME"
@@ -8,4 +31,4 @@ else
     ROFI_THEME="$DEFAULT_THEME"
 fi
 
-exec rofi -show drun -config "$ROFI_THEME"
+exec rofi -show "$MODE" -config "$ROFI_THEME"
