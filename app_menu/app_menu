@@ -4,22 +4,22 @@
 # A customized, balanced 4-column application menu configuration for Rofi, designed for Sway.
 
 print_help() {
-    echo "app_menu (Rofi)"
-    echo "----------------"
-    echo "Usage: app_menu [MODE] [CONFIG]"
-    echo ""
-    echo "Arguments:"
-    echo ""
-    echo "  MODE         Rofi mode to launch (default: drun)"
-    echo "               Examples: drun, window, run, filebrowser"
-    echo ""
-    echo "  CONFIG       Name of the config file without extension"
-    echo "               searched in /usr/share/sway_tools/rofi/"
-    echo "               or ~/.config/rofi/ (default: rofidmenu)"
-    echo ""
-    echo "Options:"
-    echo ""
-    echo "-h, --help   Display this help message and exit"
+    cat << 'EOF'
+app_menu (Rofi)
+----------------
+Usage: app_menu [MODE] [CONFIG]
+
+Arguments:
+  MODE        Rofi mode to launch (default: drun)
+              Examples: drun, window, run, filebrowser
+
+  CONFIG      Name of the config file without extension,
+              searched in /usr/share/sway_tools/rofi/
+              or ~/.config/rofi/ (default: rofidmenu)
+
+Options:
+  -h, --help  Display this help message and exit
+EOF
 }
 
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
