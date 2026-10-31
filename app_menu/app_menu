@@ -1,34 +1,37 @@
 #!/usr/bin/env bash
 
-# Funktion für die Hilfeausgabe
+# app_menu (Rofi)
+# A customized, balanced 4-column application menu configuration for Rofi, designed for Sway.
+
 print_help() {
-    echo "Usage: rofi-launcher [MODE] [THEME_NAME]"
+    echo "app_menu (Rofi)"
+    echo "----------------"
+    echo "Usage: rofi-launcher [MODE] [CONFIG]"
     echo ""
     echo "Arguments:"
-    echo "  MODE        Rofi mode to launch (default: drun)"
-    echo "              Examples: drun, window, run, filebrowser"
-    echo "  THEME_NAME  Name of the rasi theme file without extension (default: rofidmenu)"
+    echo "  MODE         Rofi mode to launch (default: drun)"
+    echo "               Examples: drun, window, run, filebrowser"
+    echo "  CONFIG  Name of the config file without extension in /usr/share/sway_tools/rofi/ or ~/.config/rofi/ (default: rofidmenu)"
     echo ""
     echo "Options:"
-    echo "  -h, --help  Display this help message and exit"
+    echo "  -h, --help   Display this help message and exit"
 }
 
-# Hilfe-Flag abfangen
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     print_help
     exit 0
 fi
 
 MODE="${1:-drun}"
-THEME_NAME="${2:-rofidmenu}"
+CONFIG="${2:-rofidmenu}"
 
-USER_THEME="$HOME/.config/rofi/${THEME_NAME}.rasi"
-DEFAULT_THEME="/usr/share/sway_tools/rofi/${THEME_NAME}.rasi"
+USER_CONFIG="$HOME/.config/rofi/${CONFIG}.rasi"
+DEFAULT_CONFIG="/usr/share/sway_tools/rofi/${CONFIG}.rasi"
 
-if [ -f "$USER_THEME" ]; then
-    ROFI_THEME="$USER_THEME"
+if [ -f "$USER_CONFIG" ]; then
+    ROFI_CONFIG="$USER_CONFIG"
 else
-    ROFI_THEME="$DEFAULT_THEME"
+    ROFI_CONFIG="$DEFAULT_CONFIG"
 fi
 
-exec rofi -show "$MODE" -config "$ROFI_THEME"
+exec rofi -show "$MODE" -config "$ROFI_CONFIG"
