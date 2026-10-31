@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# get app id and other infos run this and focus the window you want to read
+
+sleep 3 && swaymsg -t get_tree | jq ".. | select(.focused? == true) | {app_id, name}"

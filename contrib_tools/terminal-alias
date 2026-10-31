@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Reads $term from the Sway config or uses foot as a fallback.
+# To be able to use generic terminal for scripts,
+# that automatically changes when user change terminal in config
+
+TERM_CMD=$(awk '/^set \$term/ {print $3}' ~/.config/sway/config 2>/dev/null)
+TERM_BIN=${TERM_CMD:-foot}
+
+exec "$TERM_BIN" "$@"
