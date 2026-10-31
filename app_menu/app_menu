@@ -6,7 +6,7 @@
 print_help() {
     echo "app_menu (Rofi)"
     echo "----------------"
-    echo "Usage: rofi-launcher [MODE] [CONFIG]"
+    echo "Usage: app_menu [MODE] [CONFIG]"
     echo ""
     echo "Arguments:"
     echo "  MODE         Rofi mode to launch (default: drun)"
