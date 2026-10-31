@@ -10,7 +10,7 @@ app_menu (Rofi)
 Usage: app_menu [MODE] [CONFIG]
 
 Arguments:
-
+ 
   MODE        Rofi mode to launch (default: drun)
               Examples: drun, window, run, filebrowser
 
@@ -19,7 +19,7 @@ Arguments:
               or ~/.config/rofi/ (default: rofidmenu)
 
 Options:
-
+ 
   -h, --help  Display this help message and exit
 EOF
 }
