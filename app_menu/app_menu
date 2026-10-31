@@ -9,14 +9,17 @@ print_help() {
     echo "Usage: app_menu [MODE] [CONFIG]"
     echo ""
     echo "Arguments:"
+    echo ""
     echo "  MODE         Rofi mode to launch (default: drun)"
     echo "               Examples: drun, window, run, filebrowser"
+    echo ""
     echo "  CONFIG       Name of the config file without extension"
     echo "               searched in /usr/share/sway_tools/rofi/"
     echo "               or ~/.config/rofi/ (default: rofidmenu)"
     echo ""
     echo "Options:"
-    echo "  -h, --help   Display this help message and exit"
+    echo ""
+    echo "-h, --help   Display this help message and exit"
 }
 
 if [[ "$1" == "-h" || "$1" == "--help" ]]; then
