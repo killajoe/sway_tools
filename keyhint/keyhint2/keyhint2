@@ -3,7 +3,7 @@
 # This script lists Sway keybindings from the Sway config file and allows the user to select one via rofi dmenu.
 # When a keybinding is selected, it executes the associated command.
 
-CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/sway/config"
+CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/keybindings"
 
 # Path definitions: check user config first, fall back to system-wide theme
 USER_THEME="${XDG_CONFIG_HOME:-$HOME/.config}/rofi/rofikeyhint2.rasi"
