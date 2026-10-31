@@ -18,9 +18,7 @@ Arguments:
               searched in /usr/share/sway_tools/rofi/
               or ~/.config/rofi/ (default: rofidmenu)
 
-Options:
- 
-  -h, --help  Display this help message and exit
+Options:      -h, --help  Display this help message and exit
 EOF
 }
 
