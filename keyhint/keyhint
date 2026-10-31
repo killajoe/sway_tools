@@ -9,7 +9,7 @@ Main() {
     local command=(
         yad --title="EndeavourOS SWAY keybindings:" \
             --no-buttons \
-            --geometry=520x340-20-400 \
+            --geometry=520x380-20-400 \
             --borders=10 \
             --list \
             --column-align="lcc" \
