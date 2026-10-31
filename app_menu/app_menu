@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+USER_THEME="$HOME/.config/rofi/rofidmenu.rasi"
+DEFAULT_THEME="/usr/share/sway_tools/rofi/rofidmenu.rasi"
+
+if [ -f "$USER_THEME" ]; then
+    ROFI_THEME="$USER_THEME"
+else
+    ROFI_THEME="$DEFAULT_THEME"
+fi
+
+exec rofi -show drun -config "$ROFI_THEME"
