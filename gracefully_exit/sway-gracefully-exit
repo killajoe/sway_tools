@@ -14,7 +14,7 @@
 
 WAIT_TIME=5
 NOTIFY_DELAY=2
-ICON="system-log-out"
+ICON="system-log-out-symbolic"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 {exit|reboot|poweroff}"
