@@ -25,7 +25,7 @@ else
 fi
 
 # Define possible lock scripts/commands (edit this list as you like)
-LOCK_SCRIPTS=("swaylock" "swaylock-effects" "i3lock" "$HOME/.config/sway/scripts/gtklock")
+LOCK_SCRIPTS=("gtklock_config" "swaylock" "swaylock-effects" "i3lock" "gtklock")
 
 # Find available lock script
 find_lock_script() {
