@@ -1,5 +1,5 @@
 
-# joekamprad sway screencast helper (swaycast):
+# Sway screencast helper (swaycast):
 
 needed packages: `sudo pacman -Syu --needed wf-recorder slurp xdg-user-dirs`
 
