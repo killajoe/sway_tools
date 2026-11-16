@@ -19,17 +19,22 @@ By default it uses `eos-update --aur`
 
 **How to use:**
 
+Install dependencies: `sudo pacman -Syu python-pystray python-pillow`
+
 add it to be started with your session
 ```
 # update tray
 exec python3 tray_updater.py
 ```
-Needs the scripts in ~/.local/bin/ (example) and set executable...
+Needs the scripts `tray_updater.py, run_update.sh` in ~/.local/bin/ (example) and set executable.
 
 Options in the tray app:
 
 
 **Configuration**
+
+At the very beginning of tray_updater.py:
+
 ```
 CHECK_INTERVAL = 1800  # 30 minutes
 TERMINAL_EMULATOR = "kitty"  # Adjust to your preferred terminal
