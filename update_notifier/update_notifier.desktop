@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Update Notifier
+Comment=System Tray Update Notifier
+Exec=python3 /usr/bin/tray_updater.py
+Icon=system-software-update
+Terminal=false
+Categories=System;Utility;
+StartupNotify=false
